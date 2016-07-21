@@ -52,15 +52,18 @@
             android:padding="10dp">
             <TextView
                 style="@style/CurrentDayDetails"
+                android:id="@+id/current_day_description"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:text="moderate rain"/>
             <TextView
                 style="@style/CurrentDayDetails"
+                android:id="@+id/current_day_speed"
                 android:layout_width="70sp"
                 android:text="7mph"
                 android:layout_marginRight="20dp"/>
             <TextView
+                android:id="@+id/current_day_temperature_range"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="16º - 29º"
