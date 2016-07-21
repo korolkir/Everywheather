@@ -1,9 +1,5 @@
 package com.example.korolkir.everywheatherdemo;
 
-import android.util.Log;
-
-import org.json.JSONException;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,9 +18,7 @@ import rx.schedulers.Schedulers;
  */
 public class ForecastCreator {
 
-    private Forecast mForecast;
-
-    public void createForecast() {
+    public void createForecast(final ForecastPresenter presenter) {
         Subscription subscription = Single.create(new Single.OnSubscribe<Forecast>() {
             @Override
             public void call(SingleSubscriber singleSubscriber) {
@@ -44,7 +38,7 @@ public class ForecastCreator {
                 .subscribe(new Action1<Forecast>() {
                     @Override
                     public void call(Forecast forecast) {
-                        mForecast = forecast;
+                        presenter.applyForecast(forecast);
                     }
 
                 }, new Action1<Throwable>() {
@@ -53,9 +47,6 @@ public class ForecastCreator {
                        throwable.printStackTrace();
                     }
                 });
-
-
-
     }
 
     private String downloadJson() {
