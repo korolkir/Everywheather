@@ -1,16 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.korolkir.everywheatherdemo.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
-</RelativeLayout>
+        app:titleTextColor="@android:color/white"
+        android:title="Minsk"
+        android:background="@color/colorPrimary"
+        android:id="@+id/view" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:id="@+id/current_day_linear_layout"
+        android:layout_height="180dp"
+        android:layout_below="@+id/view"
+        android:background="@color/colorPrimaryDark"
+        android:layout_centerHorizontal="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/current_day_temperature"
+                android:text="-23º"
+                android:textSize="100sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorTextWhite"
+                android:gravity="center"
+                android:layout_marginLeft="60dp"/>
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:id="@+id/current_day_image"
+                android:layout_marginLeft="10dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/clouds_day"
+                android:scaleType="fitCenter"
+                android:tint="@color/colorTextWhite"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+            <TextView
+                style="@style/CurrentDayDetails"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp"
+                android:text="moderate rain"/>
+            <TextView
+                style="@style/CurrentDayDetails"
+                android:layout_width="70sp"
+                android:text="7mph"
+                android:layout_marginRight="20dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="16º - 29º"
+                android:textSize="25dp"
+                android:textColor="@color/colorTextWhite"/>
+        </LinearLayout>
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+    android:id="@+id/my_recycler_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+
+</LinearLayout>
