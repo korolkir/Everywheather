@@ -25,20 +25,24 @@ public class MainActivity extends AppCompatActivity {
         mPresenter.getForecast();
     }
 
-    public void showForecast(Forecast forecast) {
-        Log.i("MainActivity", "Forecast showing!");
-        showCurrentDayForecast(forecast.getWeatherList().get(0));
+    public void showCurrentDayTemperature(int temperature) {
+        TextView currentDayTemp = ButterKnife.findById(this, R.id.current_day_temperature);
+        currentDayTemp.setText(String.valueOf(temperature) +"º");
     }
 
-    private void showCurrentDayForecast(Weather weather) {
-        TextView currentDayTemp = ButterKnife.findById(this, R.id.current_day_temperature);
-        currentDayTemp.setText(weather.getTemperature()+"º");
+    public void showCurrentDayDescription(String description) {
         TextView currentDayDescription = ButterKnife.findById(this, R.id.current_day_description);
-        currentDayDescription.setText(weather.getDescription());
+        currentDayDescription.setText(description);
+    }
+
+    public void showCurrentDayWindSpeed(int speed) {
         TextView currentDaySpeed = ButterKnife.findById(this, R.id.current_day_speed);
-        currentDaySpeed.setText(String.valueOf(weather.getSpeed()) + " mph");
+        currentDaySpeed.setText(String.valueOf(speed) + " mph");
+    }
+
+    public void showCurrentDayTemperatureRange(int minTemperature, int maxTemperature) {
         TextView currentDayTemperatureRange = ButterKnife.findById(this, R.id.current_day_temperature_range);
-        currentDayTemperatureRange.setText(String.valueOf(weather.getTempMin()) +"º"+ " - " + weather.getTempMax() + "º");
+        currentDayTemperatureRange.setText(String.valueOf(minTemperature) +"º"+ " - " + String.valueOf(maxTemperature) + "º");
     }
 
 
