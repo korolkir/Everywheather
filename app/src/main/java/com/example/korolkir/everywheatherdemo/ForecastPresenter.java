@@ -29,6 +29,8 @@ public class ForecastPresenter {
 
     public void showForecast(Forecast forecast) {
         showCurrentDayForecast(forecast.getWeatherList().get(0));
+        forecast.getWeatherList().remove(0);
+        mView.showWeatherList(forecast.getWeatherList());
     }
 
     private void showCurrentDayForecast(Weather weather) {

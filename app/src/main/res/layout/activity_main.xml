@@ -35,7 +35,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/colorTextWhite"
                 android:gravity="center"
-                android:layout_marginLeft="40dp"/>
+                android:layout_marginLeft="70dp"/>
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
@@ -73,7 +73,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-    android:id="@+id/my_recycler_view"
+    android:id="@+id/recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>
 
