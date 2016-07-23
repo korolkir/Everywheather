@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -50,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
     public void showCurrentDayTemperatureRange(int minTemperature, int maxTemperature) {
         TextView currentDayTemperatureRange = ButterKnife.findById(this, R.id.current_day_temperature_range);
         currentDayTemperatureRange.setText(String.valueOf(minTemperature) +"º"+ " - " + String.valueOf(maxTemperature) + "º");
+    }
+
+    public void showCurrentDayImage(int imageId) {
+        ImageView image = ButterKnife.findById(this,R.id.current_day_image);
+        Picasso.with(this).load(imageId).
+                into(image);
     }
 
     public void showWeatherList(List<Weather> weatherList) {

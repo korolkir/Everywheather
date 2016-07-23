@@ -35,7 +35,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/colorTextWhite"
                 android:gravity="center"
-                android:layout_marginLeft="70dp"/>
+                android:layout_marginLeft="50dp"/>
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
@@ -63,12 +63,11 @@
                 android:text="7mph"
                 android:layout_marginRight="20dp"/>
             <TextView
+                style="@style/CurrentDayDetails"
                 android:id="@+id/current_day_temperature_range"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="16º - 29º"
-                android:textSize="25dp"
-                android:textColor="@color/colorTextWhite"/>
+                android:text="16º - 29º"/>
         </LinearLayout>
     </LinearLayout>
 

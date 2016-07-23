@@ -20,11 +20,14 @@ import butterknife.ButterKnife;
 public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecyclerViewAdapter.WeatherViewHolder> {
 
     private List<Weather> mWeatherList;
-    private Context context;
+    private Context mContext;
+    private WeatherImageSelector mSelector;
 
-    public WeatherRecyclerViewAdapter(Context context, List<Weather> mWeatherList) {
-        this.mWeatherList = mWeatherList;
-        this.context = context;
+
+    public WeatherRecyclerViewAdapter(Context context, List<Weather> weatherList) {
+        mWeatherList = weatherList;
+        mContext = context;
+        mSelector = new WeatherImageSelector();
     }
 
     @Override
@@ -41,7 +44,7 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
         holder.description.setText(weather.getDescription());
         holder.temperatureRange.setText(weather.getTempMin() +"º"+ " - " + "º" + weather.getTempMax());
         //holder.weatherImage.setImageResource(getImageIdAccordingTypeOfWeather(weather.getTypeOfWeather()));
-        Picasso.with(context).load(getImageIdAccordingTypeOfWeather(weather.getTypeOfWeather())).
+        Picasso.with(mContext).load(mSelector.getImageIdAccordingTypeOfWeather(weather.getTypeOfWeather())).
                 into(holder.weatherImage);
 
     }
@@ -49,34 +52,6 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
     @Override
     public int getItemCount() {
         return mWeatherList.size();
-    }
-
-    private int getImageIdAccordingTypeOfWeather(String description) {
-        int id = 0;
-        switch (description) {
-            case "Rain":
-                id = R.drawable.rain_day;
-                break;
-            case "Clear":
-                id = R.drawable.clear_day;
-                break;
-            case "Clouds":
-                id = R.drawable.clouds_day;
-                break;
-            case "Snow":
-                id = R.drawable.snow_day;
-                break;
-            case "Thunderstorm":
-                id = R.drawable.thunder_day;
-                break;
-            case "Drizzle":
-                id = R.drawable.drizzle_day;
-                break;
-            case "Atmosphere":
-                id = R.drawable.atmosphere_day;
-                break;
-        }
-        return id;
     }
 
     public static class WeatherViewHolder extends RecyclerView.ViewHolder {

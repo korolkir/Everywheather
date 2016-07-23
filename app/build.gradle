@@ -53,5 +53,6 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
 
 }
