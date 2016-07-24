@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -21,13 +22,15 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
 
     private List<Weather> mWeatherList;
     private Context mContext;
-    private WeatherImageSelector mSelector;
+    private WeatherImageSelector mImageSelector;
+    private WeatherColorSelector mColorSelector;
 
 
     public WeatherRecyclerViewAdapter(Context context, List<Weather> weatherList) {
         mWeatherList = weatherList;
         mContext = context;
-        mSelector = new WeatherImageSelector();
+        mImageSelector = new WeatherImageSelector();
+        mColorSelector = new WeatherColorSelector(context);
     }
 
     @Override
@@ -42,10 +45,12 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
         Weather weather = mWeatherList.get(position);
         holder.dayOfTheWeek.setText(weather.getDayOfWeek());
         holder.description.setText(weather.getDescription());
-        holder.temperatureRange.setText(weather.getTempMin() +"º"+ " - " + "º" + weather.getTempMax());
-        //holder.weatherImage.setImageResource(getImageIdAccordingTypeOfWeather(weather.getTypeOfWeather()));
-        Picasso.with(mContext).load(mSelector.getImageIdAccordingTypeOfWeather(weather.getTypeOfWeather())).
+        holder.temperatureRange.setText(weather.getTempMin() +"º"+ " - "  + weather.getTempMax() + "º");
+        String typeOfWeather = weather.getTypeOfWeather();
+        Picasso.with(mContext).load(mImageSelector.getImageIdAccordingTypeOfWeather(typeOfWeather)).
                 into(holder.weatherImage);
+        holder.itemLayout.setBackgroundColor(mColorSelector.getColorAccordingTypeOfWeather(typeOfWeather));
+
 
     }
 
@@ -56,6 +61,7 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
 
     public static class WeatherViewHolder extends RecyclerView.ViewHolder {
 
+        LinearLayout itemLayout;
         ImageView weatherImage;
         TextView description;
         TextView dayOfTheWeek;
@@ -63,6 +69,7 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
 
         WeatherViewHolder(View itemView) {
             super(itemView);
+            itemLayout = ButterKnife.findById(itemView, R.id.list_item_linear_layout);
             weatherImage = ButterKnife.findById(itemView, R.id.weather_image);
             description = ButterKnife.findById(itemView, R.id.description);
             temperatureRange = ButterKnife.findById(itemView, R.id.temperature_range);

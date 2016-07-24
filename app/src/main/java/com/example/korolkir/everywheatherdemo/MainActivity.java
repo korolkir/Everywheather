@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -65,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
         ImageView image = ButterKnife.findById(this,R.id.current_day_image);
         Picasso.with(this).load(imageId).
                 into(image);
+    }
+
+    public void setCurrentDayColor(int color) {
+        LinearLayout currentDayLinear = ButterKnife.findById(this, R.id.current_day_linear_layout);
+        currentDayLinear.setBackgroundColor(color);
     }
 
     public void showWeatherList(List<Weather> weatherList) {

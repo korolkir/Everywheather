@@ -5,5 +5,13 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorTextWhite">#FFFFFF</color>
     <color name="sunny">#FF4637</color>
-
+    <color name="cloudy">#8BB7DF</color>
+    <color name="rain">#195FA5</color>
+    <color name="clear">#FFE94D</color>
+    <color name="snow">#00BAFF</color>
+    <color name="thunderstorm">#3A11BE</color>
+    <color name="atmosphere">#BDAFBD</color>
+    <color name="drizzle">#009BD0</color>
+    <color name="additional">#598CDC</color>
+    <color name="extreme">#E5C851</color>
 </resources>

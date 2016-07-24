@@ -38,5 +38,8 @@ public class ForecastPresenter {
         mView.showCurrentDayDescription(weather.getDescription());
         mView.showCurrentDayWindSpeed(weather.getSpeed());
         mView.showCurrentDayTemperatureRange(weather.getTempMin(),weather.getTempMax());
+        mView.showCurrentDayImage(new WeatherImageSelector().getImageIdAccordingTypeOfWeather(weather.getTypeOfWeather()));
+        mView.setCurrentDayColor(new WeatherColorSelector(mView).
+                getColorAccordingTypeOfWeather(weather.getTypeOfWeather()));
     }
 }

@@ -16,13 +16,12 @@
         android:id="@+id/view" />
 
     <LinearLayout
+        android:id="@+id/current_day_linear_layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:id="@+id/current_day_linear_layout"
         android:layout_height="210dp"
-        android:layout_below="@+id/view"
-        android:background="@color/colorPrimaryDark"
-        android:layout_centerHorizontal="true">
+        android:alpha="0.9"
+        android:background="@color/colorPrimaryDark">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="130dp">

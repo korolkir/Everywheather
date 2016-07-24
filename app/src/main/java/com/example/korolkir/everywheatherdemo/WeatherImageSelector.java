@@ -7,7 +7,7 @@ import java.util.Calendar;
  */
 public class WeatherImageSelector  {
 
-    public int getImageIdAccordingTypeOfWeather(String typeOfWeather){
+    public int getImageIdAccordingTypeOfWeather(String typeOfWeather) {
         int id = 0;
         switch (typeOfWeather) {
             case "Rain":
@@ -37,14 +37,12 @@ public class WeatherImageSelector  {
             case "Atmosphere":
                 if(getTime() == 0) id = R.drawable.atmosphere_day;
                 if(getTime() == 1) id = R.drawable.atmosphere_night;
-
                 break;
-
         }
         return id;
     }
 
-    private int getTime(){
+    private int getTime() {
         Calendar time = Calendar.getInstance();
         int num;
         int result = 100;
