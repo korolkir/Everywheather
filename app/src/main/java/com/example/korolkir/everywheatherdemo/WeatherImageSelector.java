@@ -11,7 +11,7 @@ public class WeatherImageSelector  {
         int id = 0;
         switch (typeOfWeather) {
             case "Rain":
-                if(getTime() == 0) id = R.drawable.rain_day;
+                if(getTime() == 0) id = R.drawable.rain_day; // убрать лишний иф
                 if(getTime() == 1) id = R.drawable.rain_night;
                 break;
             case "Clear":

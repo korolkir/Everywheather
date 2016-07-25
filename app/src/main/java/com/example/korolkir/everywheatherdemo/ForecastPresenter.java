@@ -10,10 +10,10 @@ import butterknife.ButterKnife;
  */
 public class ForecastPresenter {
 
-    private MainActivity mView;
+    private ShowingView mView;
     private ForecastCreator mForecastCreator;
 
-    public ForecastPresenter(MainActivity mView) {
+    public ForecastPresenter(ShowingView mView) {
         this.mView = mView;
         this.mForecastCreator = new ForecastCreator();
     }
@@ -23,8 +23,9 @@ public class ForecastPresenter {
     }
 
     public void applyForecast(Forecast forecast) {
-        if(forecast != null) showForecast(forecast);
-
+        if(forecast != null) {
+            showForecast(forecast);
+        }
     }
 
     public void showForecast(Forecast forecast) {
@@ -39,7 +40,7 @@ public class ForecastPresenter {
         mView.showCurrentDayWindSpeed(weather.getSpeed());
         mView.showCurrentDayTemperatureRange(weather.getTempMin(),weather.getTempMax());
         mView.showCurrentDayImage(new WeatherImageSelector().getImageIdAccordingTypeOfWeather(weather.getTypeOfWeather()));
-        mView.setCurrentDayColor(new WeatherColorSelector(mView).
+        mView.setCurrentDayColor(new WeatherColorSelector(mView.getContext()).
                 getColorAccordingTypeOfWeather(weather.getTypeOfWeather()));
     }
 }

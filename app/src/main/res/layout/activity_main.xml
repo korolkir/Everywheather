@@ -1,78 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.korolkir.everywheatherdemo.MainActivity">
 
-    <android.support.v7.widget.Toolbar
+    <com.cjj.sva.JJSearchView
+        android:id="@+id/jjsv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:titleTextColor="@android:color/white"
-        android:title="Minsk"
-        android:background="@color/colorPrimary"
-        android:id="@+id/view" />
+        android:layout_height="60dp" />
 
     <LinearLayout
-        android:id="@+id/current_day_linear_layout"
-        android:orientation="vertical"
+        android:layout_below="@+id/jjsv"
         android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:alpha="0.9"
-        android:background="@color/colorPrimaryDark">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
         <LinearLayout
+            android:id="@+id/current_day_linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="130dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/current_day_temperature"
-                android:text="-23º"
-                android:textSize="100sp"
-                android:textStyle="bold"
-                android:textColor="@color/colorTextWhite"
-                android:gravity="center"
-                android:layout_marginLeft="50dp"/>
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:id="@+id/current_day_image"
-                android:layout_marginLeft="10dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/clouds_day"
-                android:scaleType="fitCenter"
-                android:tint="@color/colorTextWhite"/>
+            android:layout_height="wrap_content"
+            android:alpha="0.9"
+            android:background="@color/colorPrimaryDark"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp">
+
+                <TextView
+                    android:id="@+id/current_day_temperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="50dp"
+                    android:gravity="center"
+                    android:text="-23º"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="100sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/current_day_image"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/clouds_day"
+                    android:tint="@color/colorTextWhite" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/current_day_description"
+                    style="@style/CurrentDayDetails"
+                    tools:text="moderate rain" />
+
+                <TextView
+                    android:id="@+id/current_day_speed"
+                    style="@style/CurrentDayDetails"
+                    tools:text="7mph" />
+
+                <TextView
+                    android:id="@+id/current_day_temperature_range"
+                    style="@style/CurrentDayDetails"
+                    tools:text="16º - 29º" />
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp">
-            <TextView
-                style="@style/CurrentDayDetails"
-                android:id="@+id/current_day_description"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:text="moderate rain"/>
-            <TextView
-                style="@style/CurrentDayDetails"
-                android:id="@+id/current_day_speed"
-                android:layout_width="70sp"
-                android:text="7mph"
-                android:layout_marginRight="20dp"/>
-            <TextView
-                style="@style/CurrentDayDetails"
-                android:id="@+id/current_day_temperature_range"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="16º - 29º"/>
-        </LinearLayout>
+            android:layout_height="match_parent" />
+
     </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-    android:id="@+id/recycler_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
-
-</LinearLayout>
+</RelativeLayout>
