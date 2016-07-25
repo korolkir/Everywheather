@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -61,19 +62,15 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
 
     public static class WeatherViewHolder extends RecyclerView.ViewHolder {
 
-        LinearLayout itemLayout;
-        ImageView weatherImage;
-        TextView description;
-        TextView dayOfTheWeek;
-        TextView temperatureRange;
+        @BindView(R.id.list_item_linear_layout) LinearLayout itemLayout;
+        @BindView(R.id.weather_image) ImageView weatherImage;
+        @BindView(R.id.description) TextView description;
+        @BindView(R.id.day_of_the_week) TextView dayOfTheWeek;
+        @BindView(R.id.temperature_range) TextView temperatureRange;
 
         WeatherViewHolder(View itemView) {
             super(itemView);
-            itemLayout = ButterKnife.findById(itemView, R.id.list_item_linear_layout);
-            weatherImage = ButterKnife.findById(itemView, R.id.weather_image);
-            description = ButterKnife.findById(itemView, R.id.description);
-            temperatureRange = ButterKnife.findById(itemView, R.id.temperature_range);
-            dayOfTheWeek = ButterKnife.findById(itemView, R.id.day_of_the_week);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

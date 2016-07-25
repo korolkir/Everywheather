@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.korolkir.everywheatherdemo.MainActivity">
 
-    <com.cjj.sva.JJSearchView
-        android:id="@+id/jjsv"
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="60dp" />
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"/>
+
 
     <LinearLayout
-        android:layout_below="@+id/jjsv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-
 
         <LinearLayout
             android:id="@+id/current_day_linear_layout"
@@ -81,4 +81,4 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

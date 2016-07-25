@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,8 +24,16 @@ import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity implements ShowingView {
 
-    private ForecastPresenterImplementor mPresenter;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.current_day_description) TextView currentDayDescription;
+    @BindView(R.id.current_day_temperature) TextView currentDayTemp;
+    @BindView(R.id.current_day_speed) TextView currentDaySpeed;
+    @BindView(R.id.current_day_temperature_range) TextView currentDayTemperatureRange;
+    @BindView(R.id.current_day_image) ImageView image;
+    @BindView(R.id.current_day_linear_layout) LinearLayout currentDayLinear;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    private ForecastPresenterImplementor mPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements ShowingView {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -46,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements ShowingView {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -54,39 +63,34 @@ public class MainActivity extends AppCompatActivity implements ShowingView {
 
     @Override
     public void showCurrentDayTemperature(int temperature) {
-        TextView currentDayTemp = ButterKnife.findById(this, R.id.current_day_temperature);
         currentDayTemp.setText(String.format("%dº", temperature));
     }
 
     @Override
     public void showCurrentDayDescription(String description) {
-        TextView currentDayDescription = ButterKnife.findById(this, R.id.current_day_description);
         currentDayDescription.setText(description);
     }
 
     @Override
     public void showCurrentDayWindSpeed(int speed) {
-        TextView currentDaySpeed = ButterKnife.findById(this, R.id.current_day_speed);
         currentDaySpeed.setText(String.valueOf(speed) + " mph");
     }
 
     @Override
     public void showCurrentDayTemperatureRange(int minTemperature, int maxTemperature) {
-        TextView currentDayTemperatureRange = ButterKnife.findById(this, R.id.current_day_temperature_range);
         currentDayTemperatureRange.setText(String.valueOf(minTemperature) +"º"+ " - " + String.valueOf(maxTemperature) + "º");
     }
 
     @Override
     public void showCurrentDayImage(int imageId) {
-        ImageView image = ButterKnife.findById(this,R.id.current_day_image);
         Picasso.with(this).load(imageId).
                 into(image);
     }
 
     @Override
     public void setCurrentDayColor(int color) {
-        LinearLayout currentDayLinear = ButterKnife.findById(this, R.id.current_day_linear_layout);
         currentDayLinear.setBackgroundColor(color);
+        toolbar.setBackgroundColor(color);
     }
 
     @Override
