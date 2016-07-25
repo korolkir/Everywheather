@@ -7,14 +7,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cjj.sva.JJSearchView;
-
-import com.cjj.sva.anim.controller.JJCircleToLineAlphaController;
 import com.crashlytics.android.Crashlytics;
 import com.squareup.picasso.Picasso;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -27,8 +23,7 @@ import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity implements ShowingView {
 
-    private ForecastPresenter mPresenter;
-    JJCircleToLineAlphaController controller;
+    private ForecastPresenterImplementor mPresenter;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     @Override
@@ -39,34 +34,13 @@ public class MainActivity extends AppCompatActivity implements ShowingView {
         ButterKnife.bind(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
-        final JJSearchView mJJSearchView = (JJSearchView) findViewById(R.id.jjsv);
-        controller = new JJCircleToLineAlphaController();
-        mJJSearchView.setController(controller);
-        mJJSearchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mJJSearchView.resetAnim();
-
-                /* controller.getSearchView().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        v.setEnabled(true);
-                    }
-                });
-                */
-                mJJSearchView.startAnim();
-            }
-        });
-        controller.startAnim();
-        controller.resetAnim();
-
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(
                 new HorizontalDividerItemDecoration.Builder(this)
                         .color(Color.WHITE)
                         .size(1)
                         .build());
-        mPresenter = new ForecastPresenter(this);
+        mPresenter = new ForecastPresenterImplementor(this);
         mPresenter.getForecast();
     }
 
@@ -82,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements ShowingView {
     public void showCurrentDayTemperature(int temperature) {
         TextView currentDayTemp = ButterKnife.findById(this, R.id.current_day_temperature);
         currentDayTemp.setText(String.format("%dº", temperature));
-        controller.startAnim();
-
     }
 
     @Override
