@@ -1,6 +1,8 @@
-package com.example.korolkir.everywheatherdemo;
+package com.example.korolkir.everywheatherdemo.Model;
 
 import android.content.Context;
+
+import com.example.korolkir.everywheatherdemo.R;
 
 /**
  * Created by korolkir on 24.07.16.

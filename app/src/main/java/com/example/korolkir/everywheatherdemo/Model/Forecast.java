@@ -1,4 +1,4 @@
-package com.example.korolkir.everywheatherdemo;
+package com.example.korolkir.everywheatherdemo.Model;
 
 import java.util.List;
 

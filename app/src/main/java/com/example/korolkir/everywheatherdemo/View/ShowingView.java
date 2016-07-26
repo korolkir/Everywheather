@@ -1,6 +1,10 @@
-package com.example.korolkir.everywheatherdemo;
+package com.example.korolkir.everywheatherdemo.View;
 
 import android.content.Context;
+
+import com.example.korolkir.everywheatherdemo.Model.DailyForecast;
+import com.example.korolkir.everywheatherdemo.Model.Weather;
+
 import java.util.List;
 
 /**
@@ -14,7 +18,7 @@ public interface ShowingView {
     void showCurrentDayTemperatureRange(int minTemperature, int maxTemperature);
     void showCurrentDayImage(int imageId);
     void setCurrentDayColor(int color);
-    void showWeatherList(List<Weather> weatherList);
+    void showWeatherList(List<DailyForecast> weatherList);
     Context getContext();
 
 }

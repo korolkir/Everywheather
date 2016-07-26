@@ -7,15 +7,23 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.korolkir.everywheatherdemo.Model.DailyForecast;
+import com.example.korolkir.everywheatherdemo.Model.WeatherRecyclerViewAdapter;
+
 import com.crashlytics.android.Crashlytics;
+import com.example.korolkir.everywheatherdemo.Model.Weather;
+import com.example.korolkir.everywheatherdemo.Presenter.ForecastPresenterImplementor;
+import com.example.korolkir.everywheatherdemo.View.ShowingView;
 import com.squareup.picasso.Picasso;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,7 +41,8 @@ public class MainActivity extends AppCompatActivity implements ShowingView {
     @BindView(R.id.current_day_linear_layout) LinearLayout currentDayLinear;
     @BindView(R.id.toolbar) Toolbar toolbar;
     private ForecastPresenterImplementor mPresenter;
-
+    private List<DailyForecast> mDailyForecastList;
+    private WeatherRecyclerViewAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +52,10 @@ public class MainActivity extends AppCompatActivity implements ShowingView {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
         recyclerView.setLayoutManager(linearLayoutManager);
+        mDailyForecastList = new ArrayList<>();
+        mAdapter = new WeatherRecyclerViewAdapter(this,mDailyForecastList);
+        recyclerView.setAdapter(mAdapter);
         recyclerView.addItemDecoration(
                 new HorizontalDividerItemDecoration.Builder(this)
                         .color(Color.WHITE)
@@ -94,9 +105,12 @@ public class MainActivity extends AppCompatActivity implements ShowingView {
     }
 
     @Override
-    public void showWeatherList(List<Weather> weatherList) {
-        WeatherRecyclerViewAdapter adapter = new WeatherRecyclerViewAdapter(this,weatherList);
-        recyclerView.setAdapter(adapter);
+    public void showWeatherList(List<DailyForecast> weatherList) {
+        Log.i("ListInfo", String.valueOf(weatherList.size()));
+        mDailyForecastList.clear();
+        mDailyForecastList.addAll(weatherList);
+        mAdapter.notifyDataSetChanged();
+        Log.i("ItemCount", String.valueOf(mAdapter.getItemCount()));
     }
 
     @Override

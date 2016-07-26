@@ -1,7 +1,8 @@
-package com.example.korolkir.everywheatherdemo;
+package com.example.korolkir.everywheatherdemo.Model;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.korolkir.everywheatherdemo.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -21,13 +24,12 @@ import butterknife.ButterKnife;
  */
 public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecyclerViewAdapter.WeatherViewHolder> {
 
-    private List<Weather> mWeatherList;
+    private List<DailyForecast> mWeatherList;
     private Context mContext;
     private WeatherImageSelector mImageSelector;
     private WeatherColorSelector mColorSelector;
 
-
-    public WeatherRecyclerViewAdapter(Context context, List<Weather> weatherList) {
+    public WeatherRecyclerViewAdapter(Context context, List<DailyForecast> weatherList) {
         mWeatherList = weatherList;
         mContext = context;
         mImageSelector = new WeatherImageSelector();
@@ -43,21 +45,35 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
 
     @Override
     public void onBindViewHolder(WeatherViewHolder holder, int position) {
-        Weather weather = mWeatherList.get(position);
-        holder.dayOfTheWeek.setText(weather.getDayOfWeek());
-        holder.description.setText(weather.getDescription());
-        holder.temperatureRange.setText(weather.getTempMin() +"º"+ " - "  + weather.getTempMax() + "º");
-        String typeOfWeather = weather.getTypeOfWeather();
+        DailyForecast forecast = mWeatherList.get(position);
+        holder.dayOfTheWeek.setText(getDayOfTheWeek(position+1));
+        holder.description.setText(forecast.getWeather().get(0).getDescription());
+        holder.temperatureRange.setText(forecast.getTemp().getMin() +"º"+ " - "  + forecast.getTemp().getMax() + "º");
+        String typeOfWeather = forecast.getWeather().get(0).getMain();
         Picasso.with(mContext).load(mImageSelector.getImageIdAccordingTypeOfWeather(typeOfWeather)).
                 into(holder.weatherImage);
         holder.itemLayout.setBackgroundColor(mColorSelector.getColorAccordingTypeOfWeather(typeOfWeather));
-
-
     }
 
     @Override
     public int getItemCount() {
         return mWeatherList.size();
+    }
+
+    private String getDayOfTheWeek(int i) {
+        int dayOfTheWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        dayOfTheWeek +=i;
+        if (dayOfTheWeek > 7) dayOfTheWeek -= 7;
+        switch (dayOfTheWeek) {
+            case Calendar.MONDAY: return "Monday";
+            case Calendar.TUESDAY: return "Tuesday";
+            case Calendar.WEDNESDAY: return "Wednesday";
+            case Calendar.THURSDAY: return "Thursday";
+            case Calendar.FRIDAY: return "Friday";
+            case Calendar.SATURDAY: return "Saturday";
+            case Calendar.SUNDAY: return "Sunday";
+        }
+        return null;
     }
 
     public static class WeatherViewHolder extends RecyclerView.ViewHolder {

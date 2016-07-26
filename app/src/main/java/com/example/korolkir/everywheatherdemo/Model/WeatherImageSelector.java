@@ -1,4 +1,6 @@
-package com.example.korolkir.everywheatherdemo;
+package com.example.korolkir.everywheatherdemo.Model;
+
+import com.example.korolkir.everywheatherdemo.R;
 
 import java.util.Calendar;
 
