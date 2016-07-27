@@ -48,7 +48,7 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
         DailyForecast forecast = mWeatherList.get(position);
         holder.dayOfTheWeek.setText(getDayOfTheWeek(position+1));
         holder.description.setText(forecast.getWeather().get(0).getDescription());
-        holder.temperatureRange.setText(forecast.getTemp().getMin() +"º"+ " - "  + forecast.getTemp().getMax() + "º");
+        holder.temperatureRange.setText(String.format("%dº - %dº", forecast.getTemp().getMin(), forecast.getTemp().getMax()));
         String typeOfWeather = forecast.getWeather().get(0).getMain();
         Picasso.with(mContext).load(mImageSelector.getImageIdAccordingTypeOfWeather(typeOfWeather)).
                 into(holder.weatherImage);

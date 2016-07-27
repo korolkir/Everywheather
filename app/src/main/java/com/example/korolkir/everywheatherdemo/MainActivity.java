@@ -84,12 +84,12 @@ public class MainActivity extends AppCompatActivity implements ShowingView {
 
     @Override
     public void showCurrentDayWindSpeed(int speed) {
-        currentDaySpeed.setText(String.valueOf(speed) + " mph");
+        currentDaySpeed.setText(String.format("%d mph", speed));
     }
 
     @Override
     public void showCurrentDayTemperatureRange(int minTemperature, int maxTemperature) {
-        currentDayTemperatureRange.setText(String.valueOf(minTemperature) +"º"+ " - " + String.valueOf(maxTemperature) + "º");
+        currentDayTemperatureRange.setText(String.format("%dº - %dº", minTemperature, maxTemperature));
     }
 
     @Override
