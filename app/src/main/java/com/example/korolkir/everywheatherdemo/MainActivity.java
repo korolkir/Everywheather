@@ -1,14 +1,19 @@
 package com.example.korolkir.everywheatherdemo;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,7 +35,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 
-public class MainActivity extends AppCompatActivity implements ShowingView {
+
+
+
+public class MainActivity extends AppCompatActivity implements ShowingView, SearchView.OnQueryTextListener {
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.current_day_description) TextView currentDayDescription;
@@ -68,6 +76,14 @@ public class MainActivity extends AppCompatActivity implements ShowingView {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(this);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(
+                new ComponentName(this, MainActivity.class)));
+        searchView.setIconifiedByDefault(false);
         return true;
     }
 
@@ -118,4 +134,13 @@ public class MainActivity extends AppCompatActivity implements ShowingView {
         return this;
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 }
