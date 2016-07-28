@@ -40,7 +40,7 @@ public class CitySuggestionProvider extends ContentProvider {
         if (cities == null || cities.isEmpty()){
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
-                    .url("https://dl.dropboxusercontent.com/u/6802536/cidades.json")
+                    .url("https://maps.googleapis.com/maps/api/place/autocomplete/json?input=New&types=(cities)&key=AIzaSyAPnq1ZfAFiRTTPWAjB-OH9nkMJYiFVd2s")
                     .build();
 
             try {
