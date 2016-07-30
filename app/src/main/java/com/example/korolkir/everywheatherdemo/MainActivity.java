@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Parcel;
 import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
@@ -19,25 +20,24 @@ import android.text.style.CharacterStyle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
+import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.example.korolkir.everywheatherdemo.Model.DailyForecast;
+import com.example.korolkir.everywheatherdemo.Model.OpenweathermapAPI;
 import com.example.korolkir.everywheatherdemo.Model.WeatherRecyclerViewAdapter;
 
 import com.crashlytics.android.Crashlytics;
 import com.example.korolkir.everywheatherdemo.Model.Weather;
 import com.example.korolkir.everywheatherdemo.Presenter.ForecastPresenterImplementor;
+import com.example.korolkir.everywheatherdemo.View.CitySuggestion;
 import com.example.korolkir.everywheatherdemo.View.ShowingView;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.data.DataBufferUtils;
-import com.google.android.gms.location.places.AutocompletePredictionBuffer;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
+
 import com.squareup.picasso.Picasso;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -48,8 +48,10 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
+import rx.Observable;
+import rx.Subscriber;
 
-public class MainActivity extends AppCompatActivity implements ShowingView,SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements ShowingView, FloatingSearchView.OnQueryChangeListener {
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.current_day_description) TextView currentDayDescription;
@@ -58,19 +60,18 @@ public class MainActivity extends AppCompatActivity implements ShowingView,Searc
     @BindView(R.id.current_day_temperature_range) TextView currentDayTemperatureRange;
     @BindView(R.id.current_day_image) ImageView image;
     @BindView(R.id.current_day_linear_layout) LinearLayout currentDayLinear;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.search_view) FloatingSearchView mSearchView;
     private ForecastPresenterImplementor mPresenter;
     private List<DailyForecast> mDailyForecastList;
     private WeatherRecyclerViewAdapter mAdapter;
-    //private Suggestion mProvider;
-
+    CitySuggestionCreator creator;
+    List<CitySuggestion> cities;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         mDailyForecastList = new ArrayList<>();
@@ -83,22 +84,19 @@ public class MainActivity extends AppCompatActivity implements ShowingView,Searc
                         .build());
         mPresenter = new ForecastPresenterImplementor(this);
         mPresenter.getForecast();
+        mSearchView.setOnQueryChangeListener(this);
         //mProvider = new Suggestion(this);
+        cities = new ArrayList<>();
+        creator = new CitySuggestionCreator(this);
+
+
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem searchItem = menu.findItem(R.id.search);
 
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(this);
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(
-                new ComponentName(this, MainActivity.class)));
-        searchView.setIconifiedByDefault(false);
         return true;
     }
 
@@ -132,7 +130,8 @@ public class MainActivity extends AppCompatActivity implements ShowingView,Searc
     @Override
     public void setCurrentDayColor(int color) {
         currentDayLinear.setBackgroundColor(color);
-        toolbar.setBackgroundColor(color);
+        mSearchView.setBackgroundColor(color);
+        //toolbar.setBackgroundColor(color);
     }
 
     @Override
@@ -148,17 +147,27 @@ public class MainActivity extends AppCompatActivity implements ShowingView,Searc
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
+    public void onSearchTextChanged(String oldQuery, String newQuery) {
+        Observable<CitySuggestion> observable = creator.getCitiesList(newQuery);
+        observable.subscribe(new Subscriber<CitySuggestion>() {
+            @Override
+            public void onCompleted() {
 
-        return false;
-    }
+            }
 
-    @Override
-    public boolean onQueryTextChange(final String newText) {
-        //mProvider.getCitiesList(newText);
-        SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
-                CitySuggestionProvider.AUTHORITY, CitySuggestionProvider.MODE);
-        suggestions.saveRecentQuery(newText, null);
-        return false;
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(CitySuggestion citySuggestion) {
+                cities.add(citySuggestion);
+                mSearchView.swapSuggestions(cities);
+
+            }
+        });
+        cities.clear();
+
     }
 }

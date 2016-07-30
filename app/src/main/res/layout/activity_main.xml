@@ -3,20 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.example.korolkir.everywheatherdemo.MainActivity">
 
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <com.arlib.floatingsearchview.FloatingSearchView
+        android:id="@+id/search_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"/>
-
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        app:floatingSearch_viewTextColor="@color/colorTextWhite"
+        app:floatingSearch_actionMenuOverflowColor="@color/colorTextWhite"
+        app:floatingSearch_hintTextColor="@color/colorTextWhite"
+        app:floatingSearch_searchHint="Search..."
+        app:floatingSearch_leftActionColor="@color/colorTextWhite"
+        app:floatingSearch_suggestionsListAnimDuration="250"
+        app:floatingSearch_showSearchKey="false"
+        app:floatingSearch_leftActionMode="showSearch"
+        app:floatingSearch_showMoveSuggestionUp="true"
+        app:floatingSearch_menu="@menu/menu_main"
+        app:floatingSearch_close_search_on_keyboard_dismiss="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <LinearLayout
@@ -78,7 +90,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 </LinearLayout>
