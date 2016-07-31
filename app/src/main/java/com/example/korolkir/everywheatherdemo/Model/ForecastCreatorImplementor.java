@@ -38,7 +38,7 @@ public class ForecastCreatorImplementor implements ForecastCreator {
         File cacheDir = context.getCacheDir();
         Log.i("CacheDir", cacheDir.getName());
         Repository repository = new Repository(cacheDir);
-        repository.getForecastFromCache().observeOn(AndroidSchedulers.mainThread()).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<WeeklyForecast>() {
+        repository.getForecastFromCache(city).observeOn(AndroidSchedulers.mainThread()).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<WeeklyForecast>() {
             @Override
             public void onCompleted() {
 

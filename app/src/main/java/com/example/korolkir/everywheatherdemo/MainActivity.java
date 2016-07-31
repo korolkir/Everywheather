@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
                     @Override
                     public void run() {
                         mPresenter.getForecast(city);
+                        Log.i("Forecast","Getting forecast");
                     }
                 });
                 cityName.setText(city);

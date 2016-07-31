@@ -15,16 +15,17 @@ import rx.Observable;
  * Created by korolkir on 30.07.16.
  */
 interface Providers {
-    Observable<WeeklyForecast> getForecast(Observable<WeeklyForecast> oMocks);
 
-    @LifeCache(duration = 5, timeUnit = TimeUnit.MINUTES)
-    Observable<WeeklyForecast> forecastWith5MinutesLifeTime(Observable<WeeklyForecast> oMocks);
+    Observable<WeeklyForecast> getForecast(Observable<WeeklyForecast> forecastObservable);
 
-    Observable<WeeklyForecast> getMocksEvictProvider(Observable<WeeklyForecast> oMocks, EvictProvider evictProvider);
+    @LifeCache(duration = 1, timeUnit = TimeUnit.DAYS)
+    Observable<WeeklyForecast> forecastWithLifeTime(Observable<WeeklyForecast> forecastObservable);
 
-    Observable<WeeklyForecast> getMocksPaginate(Observable<WeeklyForecast> oMocks, DynamicKey page);
+    Observable<WeeklyForecast> getForecastEvictProvider(Observable<WeeklyForecast> forecastObservable, EvictProvider evictProvider);
 
-    Observable<WeeklyForecast> getMocksPaginateEvictingPerPage(Observable<WeeklyForecast> oMocks, DynamicKey page, EvictDynamicKey evictPage);
+    Observable<WeeklyForecast> getForecastPaginate(Observable<WeeklyForecast> forecastObservable, DynamicKey page);
 
-    Observable<WeeklyForecast> getMocksPaginateWithFiltersEvictingPerFilter(Observable<WeeklyForecast> oMocks, DynamicKeyGroup filterPage, EvictDynamicKey evictFilter);
+    Observable<WeeklyForecast> getForecastPaginateEvictingPerPage(Observable<WeeklyForecast> forecastObservable, DynamicKey page, EvictDynamicKey evictPage);
+
+    Observable<WeeklyForecast> getForecastPaginateWithFiltersEvictingPerFilter(Observable<WeeklyForecast> forecastObservable, DynamicKeyGroup filterPage, EvictDynamicKey evictFilter);
 }
