@@ -1,9 +1,13 @@
 package com.example.korolkir.everywheatherdemo.Model;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.korolkir.everywheatherdemo.Presenter.ForecastPresenterImplementor;
 
+
+import java.io.File;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -22,12 +26,38 @@ import rx.schedulers.Schedulers;
  */
 public class ForecastCreatorImplementor implements ForecastCreator {
 
-    @Override
-    public void createForecast(final ForecastPresenterImplementor presenter) {
-        downloadForecast(presenter);
+    Context context;
+
+    public ForecastCreatorImplementor(Context context) {
+        this.context = context;
     }
 
-    private void downloadForecast(final ForecastPresenterImplementor presenter) {
+    @Override
+    public void createForecast(final ForecastPresenterImplementor presenter, String city) {
+        //downloadForecast(presenter, city);
+        File cacheDir = context.getCacheDir();
+        Log.i("CacheDir", cacheDir.getName());
+        Repository repository = new Repository(cacheDir);
+        repository.getForecastFromCache().observeOn(AndroidSchedulers.mainThread()).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<WeeklyForecast>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.i("Errrrror",e.toString());
+            }
+
+            @Override
+            public void onNext(WeeklyForecast forecast) {
+                presenter.applyForecast(forecast);
+            }
+        });
+    }
+
+    /*
+    private void downloadForecast(final ForecastPresenterImplementor presenter, String city) {
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -40,8 +70,10 @@ public class ForecastCreatorImplementor implements ForecastCreator {
                 .client(client)
                 .addCallAdapterFactory(rxAdapter)
                 .build();
+
         OpenweathermapAPI api = retrofit.create(OpenweathermapAPI.class);
-        Observable<WeeklyForecast> call = api.getWeatherList("Minsk", "json", "88d9813e41720c056489fc6ed1c90e9f");
+        Observable<WeeklyForecast> call = api.getWeatherList(city, "json", "88d9813e41720c056489fc6ed1c90e9f");
+
         Subscription subscription = call
                 .subscribeOn(Schedulers.io()) // optional if you do not wish to override the default behavior
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<WeeklyForecast>() {
@@ -67,5 +99,6 @@ public class ForecastCreatorImplementor implements ForecastCreator {
                     }
                 });
     }
+    */
 
 }

@@ -30,10 +30,12 @@ import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.example.korolkir.everywheatherdemo.Model.DailyForecast;
 import com.example.korolkir.everywheatherdemo.Model.OpenweathermapAPI;
+import com.example.korolkir.everywheatherdemo.Model.Repository;
 import com.example.korolkir.everywheatherdemo.Model.WeatherRecyclerViewAdapter;
 
 import com.crashlytics.android.Crashlytics;
 import com.example.korolkir.everywheatherdemo.Model.Weather;
+import com.example.korolkir.everywheatherdemo.Model.WeeklyForecast;
 import com.example.korolkir.everywheatherdemo.Presenter.ForecastPresenterImplementor;
 import com.example.korolkir.everywheatherdemo.View.CitySuggestion;
 import com.example.korolkir.everywheatherdemo.View.ShowingView;
@@ -41,6 +43,7 @@ import com.example.korolkir.everywheatherdemo.View.ShowingView;
 import com.squareup.picasso.Picasso;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -51,7 +54,7 @@ import io.fabric.sdk.android.Fabric;
 import rx.Observable;
 import rx.Subscriber;
 
-public class MainActivity extends AppCompatActivity implements ShowingView, FloatingSearchView.OnQueryChangeListener {
+public class MainActivity extends AppCompatActivity implements ShowingView, FloatingSearchView.OnQueryChangeListener, SearchSuggestionsAdapter.OnBindSuggestionCallback {
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.current_day_description) TextView currentDayDescription;
@@ -61,11 +64,13 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     @BindView(R.id.current_day_image) ImageView image;
     @BindView(R.id.current_day_linear_layout) LinearLayout currentDayLinear;
     @BindView(R.id.search_view) FloatingSearchView mSearchView;
+    @BindView(R.id.city_name) TextView cityName;
     private ForecastPresenterImplementor mPresenter;
     private List<DailyForecast> mDailyForecastList;
     private WeatherRecyclerViewAdapter mAdapter;
     CitySuggestionCreator creator;
     List<CitySuggestion> cities;
+    String city;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,14 +88,34 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
                         .size(1)
                         .build());
         mPresenter = new ForecastPresenterImplementor(this);
-        mPresenter.getForecast();
+        mPresenter.getForecast("Minsk");
         mSearchView.setOnQueryChangeListener(this);
         //mProvider = new Suggestion(this);
         cities = new ArrayList<>();
         creator = new CitySuggestionCreator(this);
+        mSearchView.setOnBindSuggestionCallback(this);
+        /*
+        File cacheDir = this.getCacheDir();
+        Log.i("CacheDir", cacheDir.getName());
+        Repository repository = new Repository(cacheDir);
+        repository.getForecastFromCache().subscribe(new Subscriber<WeeklyForecast>() {
 
+            @Override
+            public void onCompleted() {
 
+            }
 
+            @Override
+            public void onError(Throwable e) {
+                Log.i("Errrrror",e.toString());
+            }
+
+            @Override
+            public void onNext(WeeklyForecast forecast) {
+                mPresenter.applyForecast(forecast);
+            }
+        });
+        */
     }
 
     @Override
@@ -169,5 +194,24 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
         });
         cities.clear();
 
+    }
+
+    @Override
+    public void onBindSuggestion(final View suggestionView, ImageView leftIcon, final TextView textView, final SearchSuggestion item, int itemPosition) {
+        city = item.getBody();
+        suggestionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //final String city = item.getBody();
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPresenter.getForecast(city);
+                    }
+                });
+                cityName.setText(city);
+
+            }
+        });
     }
 }

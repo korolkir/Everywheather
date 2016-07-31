@@ -18,12 +18,12 @@ public class ForecastPresenterImplementor implements ForecastPresenter {
 
     public ForecastPresenterImplementor(ShowingView mView) {
         this.mView = mView;
-        this.mForecastCreator = new ForecastCreatorImplementor();
+        this.mForecastCreator = new ForecastCreatorImplementor(mView.getContext());
     }
 
     @Override
-    public void getForecast() {
-        mForecastCreator.createForecast(this);
+    public void getForecast(String city) {
+        mForecastCreator.createForecast(this,city);
     }
 
     @Override

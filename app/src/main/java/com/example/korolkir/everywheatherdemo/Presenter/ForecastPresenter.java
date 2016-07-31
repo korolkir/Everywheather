@@ -8,5 +8,5 @@ import com.example.korolkir.everywheatherdemo.Model.WeeklyForecast;
  */
 public interface ForecastPresenter {
     void applyForecast(WeeklyForecast forecast);
-    void getForecast();
+    void getForecast(String city);
 }

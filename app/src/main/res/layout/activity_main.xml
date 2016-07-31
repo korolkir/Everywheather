@@ -12,14 +12,15 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="3"
+        app:floatingSearch_showOverFlowMenu="true"
         app:floatingSearch_viewTextColor="@color/colorTextWhite"
         app:floatingSearch_actionMenuOverflowColor="@color/colorTextWhite"
         app:floatingSearch_hintTextColor="@color/colorTextWhite"
         app:floatingSearch_searchHint="Search..."
         app:floatingSearch_leftActionColor="@color/colorTextWhite"
         app:floatingSearch_suggestionsListAnimDuration="250"
-        app:floatingSearch_showSearchKey="false"
+        app:floatingSearch_showSearchKey="true"
         app:floatingSearch_leftActionMode="showSearch"
         app:floatingSearch_showMoveSuggestionUp="true"
         app:floatingSearch_menu="@menu/menu_main"
@@ -30,7 +31,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
-
         <LinearLayout
             android:id="@+id/current_day_linear_layout"
             android:layout_width="match_parent"
@@ -38,7 +38,14 @@
             android:alpha="0.9"
             android:background="@color/colorPrimaryDark"
             android:orientation="vertical">
-
+            <TextView
+                android:id="@+id/city_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Minsk"
+                android:paddingLeft="15dp"
+                android:textSize="35sp"
+                android:textColor="@color/colorTextWhite"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="130dp">

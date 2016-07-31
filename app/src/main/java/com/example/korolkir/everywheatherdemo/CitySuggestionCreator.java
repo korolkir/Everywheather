@@ -66,6 +66,7 @@ public class CitySuggestionCreator {
                     Log.i("Place",String.valueOf(prediction.getPrimaryText(null)));
                     subscriber.onNext(new CitySuggestion(String.valueOf(prediction.getPrimaryText(null))));
                 }
+                buffer.release();
             }
         })
                 .subscribeOn(Schedulers.io())
