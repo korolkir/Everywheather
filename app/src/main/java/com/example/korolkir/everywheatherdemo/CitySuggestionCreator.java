@@ -63,7 +63,6 @@ public class CitySuggestionCreator {
                         Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, query, null, filter);
                 AutocompletePredictionBuffer buffer = result.await(30, TimeUnit.SECONDS);
                 for(AutocompletePrediction prediction: buffer) {
-                    Log.i("Place",String.valueOf(prediction.getPrimaryText(null)));
                     subscriber.onNext(new CitySuggestion(String.valueOf(prediction.getPrimaryText(null))));
                 }
                 buffer.release();

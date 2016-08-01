@@ -1,36 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:id="@+id/main_layout"
     tools:context="com.example.korolkir.everywheatherdemo.MainActivity">
-
-
-    <com.arlib.floatingsearchview.FloatingSearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        app:floatingSearch_showOverFlowMenu="true"
-        app:floatingSearch_viewTextColor="@color/colorTextWhite"
-        app:floatingSearch_actionMenuOverflowColor="@color/colorTextWhite"
-        app:floatingSearch_hintTextColor="@color/colorTextWhite"
-        app:floatingSearch_searchHint="Search..."
-        app:floatingSearch_leftActionColor="@color/colorTextWhite"
-        app:floatingSearch_suggestionsListAnimDuration="250"
-        app:floatingSearch_showSearchKey="true"
-        app:floatingSearch_leftActionMode="showSearch"
-        app:floatingSearch_showMoveSuggestionUp="true"
-        app:floatingSearch_menu="@menu/menu_main"
-        app:floatingSearch_close_search_on_keyboard_dismiss="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_marginTop="60dp"
         android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/current_day_linear_layout"
             android:layout_width="match_parent"
@@ -38,14 +21,16 @@
             android:alpha="0.9"
             android:background="@color/colorPrimaryDark"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/city_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Minsk"
                 android:paddingLeft="15dp"
-                android:textSize="35sp"
-                android:textColor="@color/colorTextWhite"/>
+                android:text="Minsk"
+                android:textColor="@color/colorTextWhite"
+                android:textSize="35sp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="130dp">
@@ -59,7 +44,7 @@
                     android:text="-23º"
                     android:textColor="@color/colorTextWhite"
                     android:textSize="100sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
                 <ImageView
                     android:id="@+id/current_day_image"
@@ -69,7 +54,7 @@
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
                     android:src="@drawable/clouds_day"
-                    android:tint="@color/colorTextWhite" />
+                    android:tint="@color/colorTextWhite"/>
             </LinearLayout>
 
             <LinearLayout
@@ -80,25 +65,43 @@
                 <TextView
                     android:id="@+id/current_day_description"
                     style="@style/CurrentDayDetails"
-                    tools:text="moderate rain" />
+                    tools:text="moderate rain"/>
 
                 <TextView
                     android:id="@+id/current_day_speed"
                     style="@style/CurrentDayDetails"
-                    tools:text="7mph" />
+                    tools:text="7mph"/>
 
                 <TextView
                     android:id="@+id/current_day_temperature_range"
                     style="@style/CurrentDayDetails"
-                    tools:text="16º - 29º" />
+                    tools:text="16º - 29º"/>
             </LinearLayout>
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"/>
 
     </LinearLayout>
-</LinearLayout>
+
+    <com.arlib.floatingsearchview.FloatingSearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:floatingSearch_actionMenuOverflowColor="@color/colorTextWhite"
+        app:floatingSearch_close_search_on_keyboard_dismiss="true"
+        app:floatingSearch_hintTextColor="@color/colorTextWhite"
+        app:floatingSearch_leftActionColor="@color/colorTextWhite"
+        app:floatingSearch_leftActionMode="showSearch"
+        app:floatingSearch_menu="@menu/menu_main"
+        app:floatingSearch_searchHint="Search..."
+        app:floatingSearch_showMoveSuggestionUp="true"
+        app:floatingSearch_showOverFlowMenu="true"
+        app:floatingSearch_showSearchKey="true"
+        app:floatingSearch_suggestionRightIconColor="@color/colorTextWhite"
+        app:floatingSearch_suggestionsListAnimDuration="250"
+        app:floatingSearch_viewTextColor="@color/colorTextWhite"/>
+</RelativeLayout>

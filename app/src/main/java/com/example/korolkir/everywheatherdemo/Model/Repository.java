@@ -5,6 +5,7 @@ import java.io.File;
 import io.rx_cache.DynamicKey;
 import io.rx_cache.DynamicKeyGroup;
 import io.rx_cache.EvictDynamicKey;
+
 import io.rx_cache.internal.RxCache;
 import io.victoralbertos.jolyglot.GsonSpeaker;
 import okhttp3.OkHttpClient;
@@ -21,16 +22,11 @@ import rx.schedulers.Schedulers;
  */
 public class Repository {
 
-    private final RxProviders cacheProviders;
     private Providers providers;
     private OpenweathermapAPI api;
 
 
     public Repository(File cacheDir) {
-
-        cacheProviders = new RxCache.Builder()
-                .persistence(cacheDir, new GsonSpeaker())
-                .using(RxProviders.class);
         providers = new RxCache.Builder()
                 .persistence(cacheDir, new GsonSpeaker())
                 .using(Providers.class);
@@ -46,8 +42,8 @@ public class Repository {
     }
 
 
-    public Observable<WeeklyForecast> getMocksPaginate(final int page, final boolean update) {
-        return providers.getForecastPaginateEvictingPerPage(getForecastObervable("Minsk"), new DynamicKey(page), new EvictDynamicKey(update));
+    public Observable<WeeklyForecast> getForecastEvictProvider(String city, final int page) {
+        return providers.getForecastPaginate(getForecastObervable(city), new DynamicKey(page));
     }
 
     public Observable<WeeklyForecast> getMocksWithFiltersPaginate(final String filter, final int page, final boolean updateFilter) {

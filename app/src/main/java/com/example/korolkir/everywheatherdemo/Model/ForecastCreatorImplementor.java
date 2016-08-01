@@ -9,6 +9,7 @@ import com.example.korolkir.everywheatherdemo.Presenter.ForecastPresenterImpleme
 import java.io.File;
 import java.util.List;
 
+import io.rx_cache.Reply;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

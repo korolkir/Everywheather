@@ -21,8 +21,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     @BindView(R.id.current_day_linear_layout) LinearLayout currentDayLinear;
     @BindView(R.id.search_view) FloatingSearchView mSearchView;
     @BindView(R.id.city_name) TextView cityName;
+    @BindView(R.id.main_layout) RelativeLayout mainLayout;
     private ForecastPresenterImplementor mPresenter;
     private List<DailyForecast> mDailyForecastList;
     private WeatherRecyclerViewAdapter mAdapter;
@@ -90,32 +93,11 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
         mPresenter = new ForecastPresenterImplementor(this);
         mPresenter.getForecast("Minsk");
         mSearchView.setOnQueryChangeListener(this);
-        //mProvider = new Suggestion(this);
         cities = new ArrayList<>();
         creator = new CitySuggestionCreator(this);
         mSearchView.setOnBindSuggestionCallback(this);
-        /*
-        File cacheDir = this.getCacheDir();
-        Log.i("CacheDir", cacheDir.getName());
-        Repository repository = new Repository(cacheDir);
-        repository.getForecastFromCache().subscribe(new Subscriber<WeeklyForecast>() {
+        mSearchView.setCloseSearchOnKeyboardDismiss(true);
 
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.i("Errrrror",e.toString());
-            }
-
-            @Override
-            public void onNext(WeeklyForecast forecast) {
-                mPresenter.applyForecast(forecast);
-            }
-        });
-        */
     }
 
     @Override
@@ -156,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     public void setCurrentDayColor(int color) {
         currentDayLinear.setBackgroundColor(color);
         mSearchView.setBackgroundColor(color);
-        //toolbar.setBackgroundColor(color);
+        mainLayout.setBackgroundColor(color);
     }
 
     @Override
@@ -198,20 +180,24 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
 
     @Override
     public void onBindSuggestion(final View suggestionView, ImageView leftIcon, final TextView textView, final SearchSuggestion item, int itemPosition) {
-        city = item.getBody();
+
+        leftIcon.setColorFilter(getContext().getResources().getColor(R.color.colorTextWhite));
+        textView.setTextColor(getContext().getResources().getColor(R.color.colorTextWhite));
         suggestionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //final String city = item.getBody();
+                city = item.getBody();
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         mPresenter.getForecast(city);
-                        Log.i("Forecast","Getting forecast");
+                        Log.i("Forecast", "Getting forecast");
+                        cityName.setText(city);
                     }
                 });
-                cityName.setText(city);
-
+                mSearchView.clearSearchFocus();
+                //mSearchView.setSearchHint(city);
+                mSearchView.setSearchText(city);
             }
         });
     }
