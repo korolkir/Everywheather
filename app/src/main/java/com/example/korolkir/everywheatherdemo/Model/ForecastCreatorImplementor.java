@@ -34,72 +34,53 @@ public class ForecastCreatorImplementor implements ForecastCreator {
     }
 
     @Override
-    public void createForecast(final ForecastPresenterImplementor presenter, String city) {
-        //downloadForecast(presenter, city);
-        File cacheDir = context.getCacheDir();
-        Log.i("CacheDir", cacheDir.getName());
-        Repository repository = new Repository(cacheDir);
-        repository.getForecastFromCache(city).observeOn(AndroidSchedulers.mainThread()).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<WeeklyForecast>() {
-            @Override
-            public void onCompleted() {
+    public void createForecast(final ForecastPresenterImplementor presenter, final String city, Boolean freshInfo) {
+        File fileDir = context.getFilesDir();
+        ForecastRepository repository = new ForecastRepository(fileDir);
+        if(freshInfo) {
+            repository.getForecast(city)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new Subscriber<WeeklyForecast>() {
+                        @Override
+                        public void onCompleted() {
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.i("Errrrror",e.toString());
-            }
-
-            @Override
-            public void onNext(WeeklyForecast forecast) {
-                presenter.applyForecast(forecast);
-            }
-        });
-    }
-
-    /*
-    private void downloadForecast(final ForecastPresenterImplementor presenter, String city) {
-        RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
-
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.openweathermap.org/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .addCallAdapterFactory(rxAdapter)
-                .build();
-
-        OpenweathermapAPI api = retrofit.create(OpenweathermapAPI.class);
-        Observable<WeeklyForecast> call = api.getWeatherList(city, "json", "88d9813e41720c056489fc6ed1c90e9f");
-
-        Subscription subscription = call
-                .subscribeOn(Schedulers.io()) // optional if you do not wish to override the default behavior
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<WeeklyForecast>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // cast to retrofit.HttpException to get the response code
-                        Log.i("Lolol", "kmlmk");
-
-                        if (e instanceof HttpException) {
-                            HttpException response = (HttpException)e;
-                            int code = response.code();
                         }
-                    }
 
-                    @Override
-                    public void onNext(WeeklyForecast list) {
-                        presenter.applyForecast(list);
-                    }
-                });
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.i("Errrrror", e.toString());
+                        }
+
+                        @Override
+                        public void onNext(WeeklyForecast forecast) {
+                            presenter.applyForecast(forecast);
+                        }
+                    });
+        } else {
+            repository.getForecastFromCache()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new Subscriber<WeeklyForecast>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.i("Errrrror", e.toString());
+                        }
+
+                        @Override
+                        public void onNext(WeeklyForecast forecast) {
+                            presenter.applyForecast(forecast);
+                        }
+                    });
+        }
+
     }
-    */
+
+
 
 }

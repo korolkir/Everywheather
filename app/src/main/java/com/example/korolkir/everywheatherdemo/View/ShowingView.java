@@ -19,6 +19,7 @@ public interface ShowingView {
     void showCurrentDayImage(int imageId);
     void setCurrentDayColor(int color);
     void showWeatherList(List<DailyForecast> weatherList);
+    void setCityName(String city);
     Context getContext();
 
 }

@@ -22,8 +22,8 @@ public class ForecastPresenterImplementor implements ForecastPresenter {
     }
 
     @Override
-    public void getForecast(String city) {
-        mForecastCreator.createForecast(this,city);
+    public void getForecast(String city, boolean freshInfo) {
+        mForecastCreator.createForecast(this,city,freshInfo);
     }
 
     @Override

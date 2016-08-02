@@ -1,27 +1,14 @@
 package com.example.korolkir.everywheatherdemo;
 
-import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.Parcel;
-import android.provider.SearchRecentSuggestions;
-import android.support.annotation.NonNull;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.text.TextPaint;
-import android.text.style.CharacterStyle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,25 +17,20 @@ import android.widget.TextView;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
+import com.example.korolkir.everywheatherdemo.Model.CitySuggestionCreator;
 import com.example.korolkir.everywheatherdemo.Model.DailyForecast;
-import com.example.korolkir.everywheatherdemo.Model.OpenweathermapAPI;
-import com.example.korolkir.everywheatherdemo.Model.Repository;
 import com.example.korolkir.everywheatherdemo.Model.WeatherRecyclerViewAdapter;
 
 import com.crashlytics.android.Crashlytics;
-import com.example.korolkir.everywheatherdemo.Model.Weather;
-import com.example.korolkir.everywheatherdemo.Model.WeeklyForecast;
 import com.example.korolkir.everywheatherdemo.Presenter.ForecastPresenterImplementor;
-import com.example.korolkir.everywheatherdemo.View.CitySuggestion;
+import com.example.korolkir.everywheatherdemo.Model.CitySuggestion;
 import com.example.korolkir.everywheatherdemo.View.ShowingView;
 
 import com.squareup.picasso.Picasso;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
                         .size(1)
                         .build());
         mPresenter = new ForecastPresenterImplementor(this);
-        mPresenter.getForecast("Minsk");
+        mPresenter.getForecast("Minsk",false);
         mSearchView.setOnQueryChangeListener(this);
         cities = new ArrayList<>();
         creator = new CitySuggestionCreator(this);
@@ -179,6 +161,11 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     }
 
     @Override
+    public void setCityName(String city) {
+        cityName.setText(city);
+    }
+
+    @Override
     public void onBindSuggestion(final View suggestionView, ImageView leftIcon, final TextView textView, final SearchSuggestion item, int itemPosition) {
 
         leftIcon.setColorFilter(getContext().getResources().getColor(R.color.colorTextWhite));
@@ -190,14 +177,14 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mPresenter.getForecast(city);
+                        mPresenter.getForecast(city,true);
                         Log.i("Forecast", "Getting forecast");
-                        cityName.setText(city);
+
                     }
                 });
                 mSearchView.clearSearchFocus();
-                //mSearchView.setSearchHint(city);
                 mSearchView.setSearchText(city);
+                setCityName(city);
             }
         });
     }

@@ -1,12 +1,10 @@
 package com.example.korolkir.everywheatherdemo.Model;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
-import io.rx_cache.DynamicKey;
-import io.rx_cache.DynamicKeyGroup;
-import io.rx_cache.EvictDynamicKey;
-
-import io.rx_cache.internal.RxCache;
+import io.reactivecache.Provider;
+import io.reactivecache.ReactiveCache;
 import io.victoralbertos.jolyglot.GsonSpeaker;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -18,40 +16,30 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by korolkir on 30.07.16.
+ * Created by korolkir on 02.08.16.
  */
-public class Repository {
+public class ForecastRepository {
 
-    private Providers providers;
-    private OpenweathermapAPI api;
+    private  Provider<WeeklyForecast> cacheProvider;
+    private  OpenweathermapAPI api;
 
-
-    public Repository(File cacheDir) {
-        providers = new RxCache.Builder()
-                .persistence(cacheDir, new GsonSpeaker())
-                .using(Providers.class);
+    public ForecastRepository(File filesDir) {
+        ReactiveCache reactiveCache = new ReactiveCache.Builder()
+                .using(filesDir, new GsonSpeaker());
+        this.cacheProvider = reactiveCache.<WeeklyForecast>provider().encrypt(false).lifeCache(7, TimeUnit.DAYS).withKey("forecast");
 
     }
 
     public Observable<WeeklyForecast> getForecast(String city) {
-        return providers.getForecast(getForecastObervable(city));
+        return getForecastObervable(city).compose(cacheProvider.replace());
     }
 
-    public Observable<WeeklyForecast> getForecastFromCache(String city) {
-        return providers.forecastWithLifeTime(getForecastObervable(city));
+    public Observable<WeeklyForecast> getForecastFromCache() {
+        return cacheProvider.read();
     }
 
 
-    public Observable<WeeklyForecast> getForecastEvictProvider(String city, final int page) {
-        return providers.getForecastPaginate(getForecastObervable(city), new DynamicKey(page));
-    }
 
-    public Observable<WeeklyForecast> getMocksWithFiltersPaginate(final String filter, final int page, final boolean updateFilter) {
-        return providers.getForecastPaginateWithFiltersEvictingPerFilter(getForecastObervable("Minsk"), new DynamicKeyGroup(filter, page), new EvictDynamicKey(updateFilter));
-    }
-
-    //In a real use case, here is when you build your observable with the expensive operation.
-    //Or if you are making http calls you can use Retrofit to get it out of the box.
     private Observable<WeeklyForecast> getForecastObervable(String city) {
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
 
@@ -68,7 +56,6 @@ public class Repository {
 
         OpenweathermapAPI api = retrofit.create(OpenweathermapAPI.class);
         Observable<WeeklyForecast> call = api.getWeatherList(city, "json", "88d9813e41720c056489fc6ed1c90e9f");
-
         return call.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread());
     }
 

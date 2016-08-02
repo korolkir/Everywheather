@@ -6,5 +6,5 @@ import com.example.korolkir.everywheatherdemo.Presenter.ForecastPresenterImpleme
  * Created by korolkir on 25.07.16.
  */
 public interface ForecastCreator {
-    void createForecast(final ForecastPresenterImplementor presenter, String city);
+    void createForecast(final ForecastPresenterImplementor presenter, String city, Boolean freshInfo);
 }

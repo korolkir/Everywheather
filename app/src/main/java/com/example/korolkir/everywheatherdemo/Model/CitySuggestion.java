@@ -1,4 +1,4 @@
-package com.example.korolkir.everywheatherdemo.View;
+package com.example.korolkir.everywheatherdemo.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
