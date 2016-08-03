@@ -2,6 +2,7 @@ package com.example.korolkir.everywheatherdemo;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,15 +18,17 @@ import android.widget.TextView;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
-import com.example.korolkir.everywheatherdemo.Model.CitySuggestionCreator;
+import com.example.korolkir.everywheatherdemo.Model.Suggestions.CitySuggestionCreator;
 import com.example.korolkir.everywheatherdemo.Model.DailyForecast;
 import com.example.korolkir.everywheatherdemo.Model.WeatherRecyclerViewAdapter;
 
 import com.crashlytics.android.Crashlytics;
 import com.example.korolkir.everywheatherdemo.Presenter.ForecastPresenterImplementor;
-import com.example.korolkir.everywheatherdemo.Model.CitySuggestion;
+import com.example.korolkir.everywheatherdemo.Model.Suggestions.CitySuggestion;
 import com.example.korolkir.everywheatherdemo.View.ShowingView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -38,7 +41,8 @@ import io.fabric.sdk.android.Fabric;
 import rx.Observable;
 import rx.Subscriber;
 
-public class MainActivity extends AppCompatActivity implements ShowingView, FloatingSearchView.OnQueryChangeListener, SearchSuggestionsAdapter.OnBindSuggestionCallback {
+public class MainActivity extends AppCompatActivity implements ShowingView, FloatingSearchView.OnQueryChangeListener,
+        SearchSuggestionsAdapter.OnBindSuggestionCallback, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.current_day_description) TextView currentDayDescription;
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     @BindView(R.id.search_view) FloatingSearchView mSearchView;
     @BindView(R.id.city_name) TextView cityName;
     @BindView(R.id.main_layout) RelativeLayout mainLayout;
+    @BindView(R.id.adView) AdView adView;
+    @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     private ForecastPresenterImplementor mPresenter;
     private List<DailyForecast> mDailyForecastList;
     private WeatherRecyclerViewAdapter mAdapter;
@@ -73,12 +79,17 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
                         .size(1)
                         .build());
         mPresenter = new ForecastPresenterImplementor(this);
-        mPresenter.getForecast("Minsk",false);
+        city = "Minsk";
+        mPresenter.getForecast(city,false);
         mSearchView.setOnQueryChangeListener(this);
         cities = new ArrayList<>();
         creator = new CitySuggestionCreator(this);
         mSearchView.setOnBindSuggestionCallback(this);
         mSearchView.setCloseSearchOnKeyboardDismiss(true);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        adView.loadAd(adRequest);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
     }
 
@@ -184,8 +195,14 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
                 });
                 mSearchView.clearSearchFocus();
                 mSearchView.setSearchText(city);
-                setCityName(city);
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        mPresenter.getForecast(city,true);
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

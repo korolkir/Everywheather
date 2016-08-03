@@ -29,13 +29,13 @@ public class ForecastPresenterImplementor implements ForecastPresenter {
     @Override
     public void applyForecast(WeeklyForecast forecast) {
         if(forecast != null) {
-            showCurrentDayForecast(forecast.getDailyForecastList().get(0));
+            showCurrentDayForecast(forecast.getDailyForecastList().get(0), forecast.getCity().getName());
             forecast.getDailyForecastList().remove(0);
             mView.showWeatherList(forecast.getDailyForecastList());
         }
     }
 
-    private void showCurrentDayForecast(DailyForecast dailyForecast) {
+    private void showCurrentDayForecast(DailyForecast dailyForecast, String city) {
         mView.showCurrentDayTemperature(dailyForecast.getTemp().getDay());
         mView.showCurrentDayDescription(dailyForecast.getWeather().get(0).getDescription());
         mView.showCurrentDayWindSpeed((int) dailyForecast.getSpeed());
@@ -44,6 +44,7 @@ public class ForecastPresenterImplementor implements ForecastPresenter {
                 .get(0).getMain()));
         mView.setCurrentDayColor(new WeatherColorSelector(mView.getContext()).
                 getColorAccordingTypeOfWeather(dailyForecast.getWeather().get(0).getMain()));
+        mView.setCityName(city);
     }
 
 }

@@ -2,16 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:id="@+id/main_layout"
     tools:context="com.example.korolkir.everywheatherdemo.MainActivity">
 
-    <LinearLayout
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/main_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="55dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -19,9 +27,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.9"
+
             android:background="@color/colorPrimaryDark"
             android:orientation="vertical">
-
             <TextView
                 android:id="@+id/city_name"
                 android:layout_width="match_parent"
@@ -30,11 +38,9 @@
                 android:text="Minsk"
                 android:textColor="@color/colorTextWhite"
                 android:textSize="35sp"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="130dp">
-
+                android:layout_height="match_parent">
                 <TextView
                     android:id="@+id/current_day_temperature"
                     android:layout_width="wrap_content"
@@ -45,7 +51,6 @@
                     android:textColor="@color/colorTextWhite"
                     android:textSize="100sp"
                     android:textStyle="bold"/>
-
                 <ImageView
                     android:id="@+id/current_day_image"
                     android:layout_width="100dp"
@@ -61,36 +66,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp">
-
                 <TextView
                     android:id="@+id/current_day_description"
                     style="@style/CurrentDayDetails"
                     tools:text="moderate rain"/>
-
                 <TextView
                     android:id="@+id/current_day_speed"
                     style="@style/CurrentDayDetails"
                     tools:text="7mph"/>
-
                 <TextView
                     android:id="@+id/current_day_temperature_range"
                     style="@style/CurrentDayDetails"
                     tools:text="16º - 29º"/>
             </LinearLayout>
+
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_height="194dp" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="@string/banner_home_footer">
+        </com.google.android.gms.ads.AdView>
 
     </LinearLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <com.arlib.floatingsearchview.FloatingSearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:floatingSearch_actionMenuOverflowColor="@color/colorTextWhite"
         app:floatingSearch_close_search_on_keyboard_dismiss="true"
         app:floatingSearch_hintTextColor="@color/colorTextWhite"
@@ -104,4 +116,5 @@
         app:floatingSearch_suggestionRightIconColor="@color/colorTextWhite"
         app:floatingSearch_suggestionsListAnimDuration="250"
         app:floatingSearch_viewTextColor="@color/colorTextWhite"/>
+
 </RelativeLayout>

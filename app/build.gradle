@@ -64,4 +64,5 @@ dependencies {
     compile 'com.github.VictorAlbertos.Jolyglot:jackson:0.0.3'
     compile 'com.github.VictorAlbertos.Jolyglot:moshi:0.0.3'
     compile 'com.github.VictorAlbertos:ReactiveCache:0.0.2'
+    compile 'com.google.android.gms:play-services-ads:9.2.1'
 }

@@ -1,7 +1,8 @@
-package com.example.korolkir.everywheatherdemo.Model;
+package com.example.korolkir.everywheatherdemo.Model.Suggestions;
 
 import android.content.Context;
 
+import com.example.korolkir.everywheatherdemo.Model.Suggestions.CitySuggestion;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.location.places.AutocompleteFilter;
