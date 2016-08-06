@@ -10,10 +10,10 @@
 
 
     <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true">
 
     <LinearLayout
         android:id="@+id/main_linear"
@@ -38,6 +38,7 @@
                 android:text="Minsk"
                 android:textColor="@color/colorTextWhite"
                 android:textSize="35sp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -102,7 +103,7 @@
     <com.arlib.floatingsearchview.FloatingSearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:floatingSearch_actionMenuOverflowColor="@color/colorTextWhite"
         app:floatingSearch_close_search_on_keyboard_dismiss="true"
         app:floatingSearch_hintTextColor="@color/colorTextWhite"
@@ -115,6 +116,6 @@
         app:floatingSearch_showSearchKey="true"
         app:floatingSearch_suggestionRightIconColor="@color/colorTextWhite"
         app:floatingSearch_suggestionsListAnimDuration="250"
-        app:floatingSearch_viewTextColor="@color/colorTextWhite"/>
-
+        app:floatingSearch_viewTextColor="@color/colorTextWhite"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

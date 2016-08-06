@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">EveryWheatherDemo</string>
     <string name="banner_home_footer">ca-app-pub-4572414902475413/7379823080</string>
+    <string name="facebook_app_id">1014386288669461</string>
+    <string name="fb_login_protocol_scheme">fb1014386288669461</string>
+
 </resources>

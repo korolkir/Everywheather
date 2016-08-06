@@ -26,7 +26,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.korolkir.everywheatherdemo"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -46,6 +46,9 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;
     }
+    compile('com.mikepenz.materialdrawer:library:0.9.5@aar') {
+        transitive = true
+    }
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'com.android.support:recyclerview-v7:+'
@@ -59,10 +62,8 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.0'
     compile 'com.google.android.gms:play-services-places:9.2.1'
     compile 'com.github.arimorty:floatingsearchview:2.0.2'
-    compile 'com.github.VictorAlbertos.RxCache:runtime:1.6.1'
     compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
-    compile 'com.github.VictorAlbertos.Jolyglot:jackson:0.0.3'
-    compile 'com.github.VictorAlbertos.Jolyglot:moshi:0.0.3'
     compile 'com.github.VictorAlbertos:ReactiveCache:0.0.2'
     compile 'com.google.android.gms:play-services-ads:9.2.1'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 }
