@@ -9,4 +9,5 @@ public interface ForecastCreator {
     void createForecastByCity(String city);
     void createForecastFromCache();
     void createForecastByCoordinates();
+    void applyCurrentPlaceCoordinates(Coordinates coordinates);
 }

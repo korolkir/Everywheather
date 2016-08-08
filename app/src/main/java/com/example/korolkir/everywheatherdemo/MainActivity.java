@@ -1,10 +1,14 @@
 package com.example.korolkir.everywheatherdemo;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
@@ -74,6 +79,10 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     private List<CitySuggestion> cities;
     private String city;
     private CallbackManager callbackManager;
+    private static final int GPS_SETTINGS_REQUEST_CODE = 1234 ;
+    private static final int FACEBOOK_LOGIN_REQUEST_CODE = 64206;
+    private static final int FACEBOOK_SHARE_REQUEST_CODE = 64207;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,7 +230,8 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     }
 
     @Override
-    public void onBindSuggestion(final View suggestionView, ImageView leftIcon, final TextView textView, final SearchSuggestion item, int itemPosition) {
+    public void onBindSuggestion(final View suggestionView, ImageView leftIcon, final TextView textView,
+                                 final SearchSuggestion item, int itemPosition) {
 
         leftIcon.setColorFilter(getContext().getResources().getColor(R.color.colorTextWhite));
         textView.setTextColor(getContext().getResources().getColor(R.color.colorTextWhite));
@@ -246,15 +256,61 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        mPresenter.getForecastByCurrentPlace();
+        if(checkGpsProviderIsEnable()) {
+            mPresenter.getForecastByCurrentPlace();
+        } else {
+            askToEnableGpsProvider();
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Log.i("Callback", String.valueOf(requestCode));
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case FACEBOOK_LOGIN_REQUEST_CODE:
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+                break;
+            case FACEBOOK_SHARE_REQUEST_CODE:
+                break;
+            case GPS_SETTINGS_REQUEST_CODE:
+                if(checkGpsProviderIsEnable()) {
+                    mPresenter.getForecastByCurrentPlace();
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(this, getResources().getString(R.string.gps_disable_toast_message),
+                            Toast.LENGTH_LONG).show();
+                }
+        }
     }
 
+    private boolean checkGpsProviderIsEnable() {
+        LocationManager  locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Log.i("Provider","true");
+
+            return true;
+        }
+        Log.i("Provider","false");
+        return false;
+    }
+
+    private void askToEnableGpsProvider() {
+        AlertDialog.Builder alertdialog = new AlertDialog.Builder(this);
+        alertdialog.setTitle(getResources().getString(R.string.gps_enable_asking_dialog_title));
+        alertdialog.setMessage(getResources().getString(R.string.gps_enable_asking_dialog_message));
+        alertdialog.setPositiveButton(getResources().getString(R.string.gps_enable_asking_dialog_positive_button),
+                new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivityForResult(intent, GPS_SETTINGS_REQUEST_CODE);
+            }
+        });
+        alertdialog.setNegativeButton(getResources().getString(R.string.gps_enable_asking_dialog_negative_button),
+                new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertdialog.show();
+    }
 }

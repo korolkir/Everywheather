@@ -3,5 +3,9 @@
     <string name="banner_home_footer">ca-app-pub-4572414902475413/7379823080</string>
     <string name="facebook_app_id">1014386288669461</string>
     <string name="fb_login_protocol_scheme">fb1014386288669461</string>
-
+    <string name="gps_enable_asking_dialog_title">Your GPS is disable</string>
+    <string name="gps_enable_asking_dialog_message">If your want to get forecast for you current place, please enable your GPS</string>
+    <string name="gps_enable_asking_dialog_positive_button">Settings</string>
+    <string name="gps_enable_asking_dialog_negative_button">Cancel</string>
+    <string name="gps_disable_toast_message">We can't get forecast while GPS is disable</string>
 </resources>

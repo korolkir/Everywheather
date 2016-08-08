@@ -7,8 +7,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -18,68 +25,48 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Created by korolkir on 07.08.16.
  */
-public class LocationObserver  {
+public class LocationObserver implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private Context context;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
+    private GoogleApiClient mGoogleApiClient;
+    private ForecastCreator creator;
 
-    public LocationObserver(Context context) {
+    public LocationObserver(Context context, ForecastCreator creator) {
         this.context = context;
+        this.creator = creator;
+        mGoogleApiClient = new GoogleApiClient.Builder(context)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
     }
 
 
-    public Observable<Coordinates> getCoordinatesObservable() {
-        Observable<Coordinates> observable = Observable.create(new Observable.OnSubscribe<Coordinates>() {
-            @Override
-            public void call(final Subscriber<? super Coordinates> subscriber) {
-                locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-                locationListener = new LocationListener() {
-                    @Override
-                    public void onLocationChanged(Location location) {
-                        Log.i("Location", String.valueOf(location.getLatitude()) + " - " + String.valueOf(location.getLongitude()));
-                        deactivateLocationListener();
-                        subscriber.onNext(new Coordinates(location.getLatitude(), location.getLongitude()));
-                    }
-
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                    }
-
-                    @Override
-                    public void onProviderEnabled(String provider) {
-
-                    }
-
-                    @Override
-                    public void onProviderDisabled(String provider) {
-
-                    }
-                };
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                    Log.i("Permission","true");
-                } else {
-                    Log.i("Permission","false");
-
-                }
+    @Override
+    public void onConnected(Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                    mGoogleApiClient);
+            if (mLastLocation != null) {
+                creator.applyCurrentPlaceCoordinates(new Coordinates(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
             }
-        })
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread());
-        return observable;
+        }
     }
 
-    public void deactivateLocationListener() {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        if (locationManager != null && locationManager != null) {
-            locationManager.removeUpdates(locationListener);
-            locationManager = null;
-            locationListener = null;
-        }
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i("Api", String.valueOf(i));
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.i("Api","Conntection failed" + " " + connectionResult.getErrorMessage()
+        );
+    }
+
+    public void disconnectApiClient() {
+        mGoogleApiClient.disconnect();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.korolkir.everywheatherdemo.Model;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 
 import com.example.korolkir.everywheatherdemo.Presenter.ForecastPresenter;
@@ -78,43 +79,30 @@ public class ForecastCreatorImplementor implements ForecastCreator {
 
     @Override
     public void createForecastByCoordinates() {
-        locationObserver = new LocationObserver(context);
-        locationObserver.getCoordinatesObservable().subscribe(new Subscriber<Coordinates>() {
-            @Override
-            public void onCompleted() {
-                Log.i("Observ","completed");
-            }
+        locationObserver = new LocationObserver(context, this);
+    }
 
-            @Override
-            public void onError(Throwable e) {
-                Log.i("Observ",e.toString());
-            }
+    @Override
+    public void applyCurrentPlaceCoordinates(Coordinates coordinates) {
+        repository.getForecastByCoordinates(coordinates.getLat(),coordinates.getLon())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<WeeklyForecast>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
-            @Override
-            public void onNext(Coordinates coordinates) {
-                Log.i("Observ", String.valueOf(coordinates.getLat()));
-                unsubscribe();
-                locationObserver.deactivateLocationListener();
-                repository.getForecastByCoordinates(coordinates.getLat(),coordinates.getLon())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(new Subscriber<WeeklyForecast>() {
-                            @Override
-                            public void onCompleted() {
-                            }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i("Errrrror", e.toString());
+                    }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.i("Errrrror", e.toString());
-                            }
-
-                            @Override
-                            public void onNext(WeeklyForecast forecast) {
-                                presenter.applyForecast(forecast);
-                            }
-                        });
-            }
-        });
-
+                    @Override
+                    public void onNext(WeeklyForecast forecast) {
+                        presenter.applyForecast(forecast);
+                        locationObserver.disconnectApiClient();
+                        locationObserver = null;
+                    }
+                });
     }
 }
