@@ -1,7 +1,6 @@
 package com.example.korolkir.everywheatherdemo.Presenter;
 
 import com.example.korolkir.everywheatherdemo.Model.DailyForecast;
-import com.example.korolkir.everywheatherdemo.Model.Forecast;
 import com.example.korolkir.everywheatherdemo.Model.ForecastCreatorImplementor;
 import com.example.korolkir.everywheatherdemo.Model.WeatherColorSelector;
 import com.example.korolkir.everywheatherdemo.Model.WeatherImageSelector;
@@ -18,12 +17,22 @@ public class ForecastPresenterImplementor implements ForecastPresenter {
 
     public ForecastPresenterImplementor(ShowingView mView) {
         this.mView = mView;
-        this.mForecastCreator = new ForecastCreatorImplementor(mView.getContext());
+        this.mForecastCreator = new ForecastCreatorImplementor(mView.getContext(), this);
     }
 
     @Override
-    public void getForecast(String city, boolean freshInfo) {
-        mForecastCreator.createForecast(this,city,freshInfo);
+    public void getForecastByCity(String city) {
+        mForecastCreator.createForecastByCity(city);
+    }
+
+    @Override
+    public void getForecastByCurrentPlace() {
+        mForecastCreator.createForecastByCoordinates();
+    }
+
+    @Override
+    public void getForecastFromCache() {
+        mForecastCreator.createForecastFromCache();
     }
 
     @Override
@@ -33,6 +42,7 @@ public class ForecastPresenterImplementor implements ForecastPresenter {
             forecast.getDailyForecastList().remove(0);
             mView.showWeatherList(forecast.getDailyForecastList());
         }
+
     }
 
     private void showCurrentDayForecast(DailyForecast dailyForecast, String city) {

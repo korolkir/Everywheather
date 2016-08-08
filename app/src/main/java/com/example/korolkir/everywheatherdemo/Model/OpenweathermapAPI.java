@@ -9,5 +9,13 @@ import rx.Observable;
  */
 public interface OpenweathermapAPI {
     @GET("/data/2.5/forecast/daily")
-    Observable<WeeklyForecast> getWeatherList(@Query("q") String city, @Query("mode") String mode, @Query("APPID") String appId);
+    Observable<WeeklyForecast> getWeatherListByCity(@Query("q") String city, @Query("mode") String mode,
+                                                    @Query("APPID") String appId);
+    @GET("/data/2.5/forecast/daily")
+    Observable<WeeklyForecast> getWeatherListByCoordinates(@Query("lat") String lat, @Query("lon") String lon,
+                                                           @Query("mode") String mode, @Query("APPID") String appId);
 }
+
+
+
+

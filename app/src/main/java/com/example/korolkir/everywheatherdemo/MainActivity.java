@@ -3,7 +3,6 @@ package com.example.korolkir.everywheatherdemo;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
@@ -36,12 +34,9 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.facebook.share.model.ShareLinkContent;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
@@ -75,11 +70,10 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     private ForecastPresenterImplementor mPresenter;
     private List<DailyForecast> mDailyForecastList;
     private WeatherRecyclerViewAdapter mAdapter;
-    CitySuggestionCreator creator;
-    List<CitySuggestion> cities;
-    String city;
-    CallbackManager callbackManager;
-
+    private CitySuggestionCreator creator;
+    private List<CitySuggestion> cities;
+    private String city;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
                         .build());
         mPresenter = new ForecastPresenterImplementor(this);
         city = "Minsk";
-        mPresenter.getForecast(city,false);
+        mPresenter.getForecastFromCache();
         mSearchView.setOnQueryChangeListener(this);
         cities = new ArrayList<>();
         creator = new CitySuggestionCreator(this);
@@ -130,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
                         // App code
                     }
                 });
-
+        mPresenter.getForecastByCurrentPlace();
     }
 
     @Override
@@ -142,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.facebook_login:
                 return true;
@@ -189,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
         mDailyForecastList.clear();
         mDailyForecastList.addAll(weatherList);
         mAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -238,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mPresenter.getForecast(city,true);
+                        mPresenter.getForecastByCity(city);
                         Log.i("Forecast", "Getting forecast");
 
                     }
@@ -252,8 +246,7 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        mPresenter.getForecast(city,true);
-        swipeRefreshLayout.setRefreshing(false);
+        mPresenter.getForecastByCurrentPlace();
     }
 
     @Override

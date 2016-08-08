@@ -22,17 +22,36 @@ public class ForecastRepository {
 
     private  Provider<WeeklyForecast> cacheProvider;
     private  OpenweathermapAPI api;
+    Retrofit retrofit;
+    private static final String MODE = "json";
+    private static final String APPID  = "88d9813e41720c056489fc6ed1c90e9f";
 
     public ForecastRepository(File filesDir) {
         ReactiveCache reactiveCache = new ReactiveCache.Builder()
                 .using(filesDir, new GsonSpeaker());
         this.cacheProvider = reactiveCache.<WeeklyForecast>provider().encrypt(false).lifeCache(7, TimeUnit.DAYS).withKey("forecast");
+        RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://api.openweathermap.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .addCallAdapterFactory(rxAdapter)
+                .build();
+        api = retrofit.create(OpenweathermapAPI.class);
     }
 
-    public Observable<WeeklyForecast> getForecast(String city) {
-        return getForecastObervable(city).compose(cacheProvider.replace());
+    public Observable<WeeklyForecast> getForecastByCity(String city) {
+        return getForecastObservableByCity(city).compose(cacheProvider.replace());
     }
+
+    public Observable<WeeklyForecast> getForecastByCoordinates(double lat, double lon) {
+        return getForecastObservableByCoordinates(lat, lon).compose(cacheProvider.replace());
+    }
+
 
     public Observable<WeeklyForecast> getForecastFromCache() {
         return cacheProvider.read();
@@ -40,23 +59,14 @@ public class ForecastRepository {
 
 
 
-    private Observable<WeeklyForecast> getForecastObervable(String city) {
-        RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
-
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.openweathermap.org/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .addCallAdapterFactory(rxAdapter)
-                .build();
-
-        OpenweathermapAPI api = retrofit.create(OpenweathermapAPI.class);
-        Observable<WeeklyForecast> call = api.getWeatherList(city, "json", "88d9813e41720c056489fc6ed1c90e9f");
+    private Observable<WeeklyForecast> getForecastObservableByCity(String city) {
+        Observable<WeeklyForecast> call = api.getWeatherListByCity(city, MODE, APPID);
         return call.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    private Observable<WeeklyForecast> getForecastObservableByCoordinates(double lat, double lon) {
+        Observable<WeeklyForecast> call = api.getWeatherListByCoordinates(String.valueOf(lat), String.valueOf(lon),
+                MODE, APPID);
+        return call.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread());
+    }
 }
