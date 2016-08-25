@@ -1,6 +1,7 @@
-package com.example.korolkir.everywheatherdemo.Model;
+package com.example.korolkir.everywheatherdemo.model;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.example.korolkir.everywheatherdemo.R;
 
@@ -9,43 +10,48 @@ import com.example.korolkir.everywheatherdemo.R;
  */
 public class WeatherColorSelector {
 
-    private Context mContext;
+    private Context context;
 
-    public WeatherColorSelector(Context mContext) {
-        this.mContext = mContext;
+    public WeatherColorSelector(Context context) {
+        this.context = context;
     }
 
     public int getColorAccordingTypeOfWeather(String typeOfWeather) {
         int color = 0;
+        int id = 0;
         switch (typeOfWeather) {
             case "Rain":
-                color = mContext.getResources().getColor(R.color.rain);
+                id = R.color.rain;
                 break;
             case "Clear":
-                color = mContext.getResources().getColor(R.color.sunny);
+                id = R.color.sunny;
                 break;
             case "Clouds":
-                color = mContext.getResources().getColor(R.color.cloudy);
+                id = R.color.cloudy;
                 break;
-
             case "Snow":
-                color = mContext.getResources().getColor(R.color.snow);
+                id = R.color.snow;
                 break;
             case "Thunderstorm":
-                color = mContext.getResources().getColor(R.color.thunderstorm);
+                id = R.color.thunderstorm;
                 break;
             case "Drizzle":
-                color = mContext.getResources().getColor(R.color.drizzle);
+                id = R.color.drizzle;
                 break;
             case "Atmosphere":
-                color = mContext.getResources().getColor(R.color.atmosphere);
+                id = R.color.atmosphere;
                 break;
             case "Extreme":
-                color = mContext.getResources().getColor(R.color.extreme);
+                id = R.color.extreme;
                 break;
             case "Additional":
-                color = mContext.getResources().getColor(R.color.additional);
+                id = R.color.additional;
                 break;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            color = context.getResources().getColor(id, context.getTheme());
+        } else {
+            color = context.getResources().getColor(id);
         }
         return color;
     }

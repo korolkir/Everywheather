@@ -1,15 +1,12 @@
-package com.example.korolkir.everywheatherdemo.Model;
+package com.example.korolkir.everywheatherdemo.model;
 
-import android.content.Context;
-import android.location.Location;
 import android.util.Log;
 
-import com.example.korolkir.everywheatherdemo.Presenter.ForecastPresenter;
-
+import com.example.korolkir.everywheatherdemo.EveryWheatherApllication;
+import com.example.korolkir.everywheatherdemo.presenter.ForecastPresenter;
 
 import java.io.File;
 
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -17,16 +14,14 @@ import rx.schedulers.Schedulers;
 /**
  * Created by korolkir on 21.07.16.
  */
-public class ForecastCreatorImplementor implements ForecastCreator {
+public class EveryWeatherForecastCreator implements ForecastCreator {
 
-    Context context;
-    ForecastRepository repository;
-    ForecastPresenter presenter;
-    LocationObserver locationObserver;
+    private ForecastRepository repository;
+    private ForecastPresenter presenter;
+    private LocationObserver locationObserver;
 
-    public ForecastCreatorImplementor(Context context, ForecastPresenter presenter) {
-        this.context = context;
-        File fileDir = context.getFilesDir();
+    public EveryWeatherForecastCreator(ForecastPresenter presenter) {
+        File fileDir = EveryWheatherApllication.getContext().getFilesDir();
         repository = new ForecastRepository(fileDir);
         this.presenter = presenter;
     }
@@ -79,7 +74,7 @@ public class ForecastCreatorImplementor implements ForecastCreator {
 
     @Override
     public void createForecastByCoordinates() {
-        locationObserver = new LocationObserver(context, this);
+        locationObserver = new LocationObserver(this);
     }
 
     @Override

@@ -1,6 +1,4 @@
-package com.example.korolkir.everywheatherdemo.Model;
-
-import com.example.korolkir.everywheatherdemo.Presenter.ForecastPresenterImplementor;
+package com.example.korolkir.everywheatherdemo.model;
 
 /**
  * Created by korolkir on 25.07.16.

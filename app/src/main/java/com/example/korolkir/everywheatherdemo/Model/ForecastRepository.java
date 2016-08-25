@@ -1,4 +1,4 @@
-package com.example.korolkir.everywheatherdemo.Model;
+package com.example.korolkir.everywheatherdemo.model;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -20,11 +20,13 @@ import rx.schedulers.Schedulers;
  */
 public class ForecastRepository {
 
-    private  Provider<WeeklyForecast> cacheProvider;
-    private  OpenweathermapAPI api;
-    Retrofit retrofit;
     private static final String MODE = "json";
     private static final String APPID  = "88d9813e41720c056489fc6ed1c90e9f";
+
+    private  Provider<WeeklyForecast> cacheProvider;
+    private  OpenweathermapAPI api;
+    private Retrofit retrofit;
+
 
     public ForecastRepository(File filesDir) {
         ReactiveCache reactiveCache = new ReactiveCache.Builder()
@@ -61,12 +63,12 @@ public class ForecastRepository {
 
     private Observable<WeeklyForecast> getForecastObservableByCity(String city) {
         Observable<WeeklyForecast> call = api.getWeatherListByCity(city, MODE, APPID);
-        return call.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread());
+        return call;
     }
 
     private Observable<WeeklyForecast> getForecastObservableByCoordinates(double lat, double lon) {
         Observable<WeeklyForecast> call = api.getWeatherListByCoordinates(String.valueOf(lat), String.valueOf(lon),
                 MODE, APPID);
-        return call.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread());
+        return call;
     }
 }

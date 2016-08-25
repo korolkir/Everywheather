@@ -1,4 +1,4 @@
-package com.example.korolkir.everywheatherdemo.Model;
+package com.example.korolkir.everywheatherdemo.model;
 
 import com.example.korolkir.everywheatherdemo.R;
 

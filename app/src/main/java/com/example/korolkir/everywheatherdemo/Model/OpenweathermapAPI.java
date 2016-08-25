@@ -1,4 +1,4 @@
-package com.example.korolkir.everywheatherdemo.Model;
+package com.example.korolkir.everywheatherdemo.model;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

@@ -1,4 +1,4 @@
-package com.example.korolkir.everywheatherdemo.Model;
+package com.example.korolkir.everywheatherdemo.model;
 
 /**
  * Created by korolkir on 07.08.16.

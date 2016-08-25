@@ -7,5 +7,7 @@
     <string name="gps_enable_asking_dialog_message">If your want to get forecast for you current place, please enable your GPS</string>
     <string name="gps_enable_asking_dialog_positive_button">Settings</string>
     <string name="gps_enable_asking_dialog_negative_button">Cancel</string>
-    <string name="gps_disable_toast_message">We can't get forecast while GPS is disable</string>
+    <string name="gps_disable_toast_message">Forecast for your current place is not available while GPS is disable</string>
+    <string name="rainy_notification_content_title">Today is rainy</string>
+    <string name="rainy_notification_content_text">Take un umbrella with you</string>
 </resources>

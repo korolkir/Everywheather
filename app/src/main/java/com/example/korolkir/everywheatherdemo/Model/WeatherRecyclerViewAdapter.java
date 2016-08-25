@@ -1,8 +1,7 @@
-package com.example.korolkir.everywheatherdemo.Model;
+package com.example.korolkir.everywheatherdemo.model;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,16 +23,18 @@ import butterknife.ButterKnife;
  */
 public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecyclerViewAdapter.WeatherViewHolder> {
 
-    private List<DailyForecast> mWeatherList;
-    private Context mContext;
-    private WeatherImageSelector mImageSelector;
-    private WeatherColorSelector mColorSelector;
+    private List<DailyForecast> weatherList;
+    private Context context;
+    private WeatherImageSelector imageSelector;
+    private WeatherColorSelector colorSelector;
 
     public WeatherRecyclerViewAdapter(Context context, List<DailyForecast> weatherList) {
-        mWeatherList = weatherList;
-        mContext = context;
-        mImageSelector = new WeatherImageSelector();
-        mColorSelector = new WeatherColorSelector(context);
+        this.weatherList = weatherList;
+        this.context = context;
+        imageSelector = new WeatherImageSelector();
+        colorSelector = new WeatherColorSelector(context);
+
+
     }
 
     @Override
@@ -45,19 +46,19 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
 
     @Override
     public void onBindViewHolder(WeatherViewHolder holder, int position) {
-        DailyForecast forecast = mWeatherList.get(position);
+        DailyForecast forecast = weatherList.get(position);
         holder.dayOfTheWeek.setText(getDayOfTheWeek(position+1));
         holder.description.setText(forecast.getWeather().get(0).getDescription());
         holder.temperatureRange.setText(String.format("%dº - %dº", forecast.getTemp().getMin(), forecast.getTemp().getMax()));
         String typeOfWeather = forecast.getWeather().get(0).getMain();
-        Picasso.with(mContext).load(mImageSelector.getImageIdAccordingTypeOfWeather(typeOfWeather)).
+        Picasso.with(context).load(imageSelector.getImageIdAccordingTypeOfWeather(typeOfWeather)).
                 into(holder.weatherImage);
-        holder.itemLayout.setBackgroundColor(mColorSelector.getColorAccordingTypeOfWeather(typeOfWeather));
+        holder.itemLayout.setBackgroundColor(colorSelector.getColorAccordingTypeOfWeather(typeOfWeather));
     }
 
     @Override
     public int getItemCount() {
-        return mWeatherList.size();
+        return weatherList.size();
     }
 
     private String getDayOfTheWeek(int i) {

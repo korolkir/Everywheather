@@ -1,8 +1,6 @@
-package com.example.korolkir.everywheatherdemo.Model.Suggestions;
+package com.example.korolkir.everywheatherdemo.model.suggestions;
 
-import android.content.Context;
-
-import com.example.korolkir.everywheatherdemo.Model.Suggestions.CitySuggestion;
+import com.example.korolkir.everywheatherdemo.EveryWheatherApllication;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.location.places.AutocompleteFilter;
@@ -22,20 +20,17 @@ import rx.schedulers.Schedulers;
  */
 public class CitySuggestionCreator {
 
-    private GoogleApiClient mGoogleApiClient;
     public static final int TYPE_FILTER_CITIES = 5;
+    private GoogleApiClient googleApiClient;
 
-
-    public CitySuggestionCreator(Context context) {
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(context)
+    public CitySuggestionCreator() {
+        googleApiClient = new GoogleApiClient
+                .Builder(EveryWheatherApllication.getContext())
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .build();
-        mGoogleApiClient.connect();
+        googleApiClient.connect();
     }
-
-
 
     public Observable<CitySuggestion> getCitiesList(final String query) {
         Observable<CitySuggestion> suggestionObservable = Observable.create(new Observable.OnSubscribe<CitySuggestion>() {
@@ -43,7 +38,7 @@ public class CitySuggestionCreator {
             public void call(Subscriber<? super CitySuggestion> subscriber) {
                 AutocompleteFilter filter = new AutocompleteFilter.Builder().setTypeFilter(TYPE_FILTER_CITIES).build();
                 PendingResult<AutocompletePredictionBuffer> result =
-                        Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, query, null, filter);
+                        Places.GeoDataApi.getAutocompletePredictions(googleApiClient, query, null, filter);
                 AutocompletePredictionBuffer buffer = result.await(30, TimeUnit.SECONDS);
                 for(AutocompletePrediction prediction: buffer) {
                     subscriber.onNext(new CitySuggestion(String.valueOf(prediction.getPrimaryText(null))));
