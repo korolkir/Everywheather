@@ -126,8 +126,6 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.facebook_login:
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

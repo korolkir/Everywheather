@@ -41,7 +41,7 @@ public class NavigationDrawerMenuAdapter extends RecyclerView.Adapter<Navigation
 
     @Override
     public void onBindViewHolder(NavigationDrawerMenuAdapter.ViewHolder holder, int position) {
-        if(holder.holderId == 1) {                              // as the list view is going to be called after the header view so we decrement the
+        if(holder.holderId == 1) {
             ShareLinkContent content = new ShareLinkContent.Builder()
                     .setContentUrl(Uri.parse("https://youtube.com"))
                     .build();

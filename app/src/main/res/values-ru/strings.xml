@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">EveryWheatherDemo</string>
+    <string name="banner_home_footer">ca-app-pub-4572414902475413/7379823080</string>
+    <string name="facebook_app_id">1014386288669461</string>
+    <string name="fb_login_protocol_scheme">fb1014386288669461</string>
+    <string name="gps_enable_asking_dialog_title">Ваш GPS выключен</string>
+    <string name="gps_enable_asking_dialog_message">Если вы хотите получить прогноз для вашего текущего местоположения, пожалуйста, включите ваш GPS</string>
+    <string name="gps_enable_asking_dialog_positive_button">Настройки</string>
+    <string name="gps_enable_asking_dialog_negative_button">Отмена</string>
+    <string name="gps_disable_toast_message">Невозможно получить прогноз для вашего текущего местоположения, т.к. GPS отключен</string>
+    <string name="rainy_notification_content_title">Сегодня дождливо</string>
+    <string name="rainy_notification_content_text">Возьмите с собой зонтик</string>
+</resources>
