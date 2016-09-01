@@ -43,6 +43,12 @@ public interface ShowingView {
     void goToGpsSettings();
 
     void refreshCurrentFacebookProfileName();
+
+    void setVisibleMainLayouts();
+
+    void setProgressBarEnable(boolean b);
+
+    void deleteProgressBar();
 }
 
 

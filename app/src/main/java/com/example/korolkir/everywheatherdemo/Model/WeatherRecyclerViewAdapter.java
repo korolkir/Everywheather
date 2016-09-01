@@ -33,8 +33,6 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
         this.context = context;
         imageSelector = new WeatherImageSelector();
         colorSelector = new WeatherColorSelector(context);
-
-
     }
 
     @Override

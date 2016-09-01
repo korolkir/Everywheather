@@ -36,6 +36,7 @@ import com.example.korolkir.everywheatherdemo.model.suggestions.CitySuggestion;
 import com.facebook.CallbackManager;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
@@ -88,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     DrawerLayout drawerLayout;
     @BindView(R.id.drawer_recycler_view)
     RecyclerView drawerRecyclerView;
+    @BindView(R.id.progress_view)
+    CircularProgressView progressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
         initViews();
         initCallbacks();
         presenter = new EveryWeatherForecastPresenter(this);
-        presenter.getForecastFromCache();
+        presenter.onActivityCreate();
     }
 
 
@@ -338,5 +341,27 @@ public class MainActivity extends AppCompatActivity implements ShowingView, Floa
     @Override
     public void refreshCurrentFacebookProfileName() {
         navigationDrawerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setVisibleMainLayouts() {
+        currentDayLinear.setVisibility(View.VISIBLE);
+        searchView.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
+        adView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setProgressBarEnable(boolean b) {
+        if(b) {
+            progressView.startAnimation();
+        } else {
+            progressView.stopAnimation();
+        }
+    }
+
+    @Override
+    public void deleteProgressBar() {
+        mainLayout.removeView(progressView);
     }
 }

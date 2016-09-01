@@ -2,6 +2,8 @@ package com.example.korolkir.everywheatherdemo.presenter;
 
 import android.content.Context;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.example.korolkir.everywheatherdemo.EveryWheatherApllication;
@@ -33,6 +35,7 @@ public class EveryWeatherForecastPresenter implements ForecastPresenter {
     private CitySuggestionCreator citySuggestionCreator;
     private Context context;
     private List<CitySuggestion> cities;
+    private boolean firstForecastShowing;
 
     public EveryWeatherForecastPresenter(ShowingView view) {
         this.showingView = view;
@@ -61,6 +64,12 @@ public class EveryWeatherForecastPresenter implements ForecastPresenter {
     @Override
     public void applyForecast(WeeklyForecast forecast) {
         if(forecast != null) {
+            if(firstForecastShowing) {
+                firstForecastShowing = false;
+                showingView.setVisibleMainLayouts();
+                showingView.setProgressBarEnable(false);
+                showingView.deleteProgressBar();
+            }
             showCurrentDayForecast(forecast.getDailyForecastList().get(0), forecast.getCity().getName());
             forecast.getDailyForecastList().remove(0);
             showingView.showWeatherList(forecast.getDailyForecastList());
@@ -131,7 +140,6 @@ public class EveryWeatherForecastPresenter implements ForecastPresenter {
             public void onNext(CitySuggestion citySuggestion) {
                 cities.add(citySuggestion);
                 showingView.showSuggestions(cities);
-
             }
         });
         cities.clear();
@@ -152,11 +160,29 @@ public class EveryWeatherForecastPresenter implements ForecastPresenter {
         showingView.setRefreshing(false);
     }
 
+    @Override
+    public void onActivityCreate() {
+        showingView.setProgressBarEnable(true);
+        firstForecastShowing = true;
+        if(isNetworkAvailable()) {
+            getForecastByCurrentPlace();
+        } else {
+            getForecastFromCache();
+        }
+    }
+
     private boolean checkGpsProviderIsEnable() {
         if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             return true;
         }
         return false;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

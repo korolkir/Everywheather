@@ -30,4 +30,6 @@ public interface ForecastPresenter {
     void currentFacebookProfileChaned();
 
     void userDeclineToTurnOnGps();
+
+    void onActivityCreate();
 }

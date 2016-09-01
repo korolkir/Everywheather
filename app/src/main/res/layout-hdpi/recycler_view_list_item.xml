@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_item_linear_layout"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/sunny">
+    <ImageView
+        android:id="@+id/weather_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center"
+        android:tint="@color/colorTextWhite"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginLeft="5dp"
+        android:orientation="vertical">
+    <TextView
+        android:id="@+id/day_of_the_week"
+        android:layout_height="25dp"
+        android:layout_width="130dp"
+        android:text="Wendesday"
+        android:textSize="20dp"
+        android:textColor="@color/colorTextWhite"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_vertical"/>
+    <TextView
+        android:id="@+id/description"
+        android:layout_height="25dp"
+        android:layout_width="wrap_content"
+        android:text="Cloudy"
+        android:textSize="15dp"
+        android:textColor="@color/colorTextWhite"
+        android:layout_gravity="center_vertical"
+        android:layout_below="@+id/date"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/temperature_range"
+        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:text="16º - 29º"
+        android:textSize="25sp"
+        android:textColor="@color/colorTextWhite"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
+</LinearLayout>
+
