@@ -53,7 +53,11 @@ public class EveryWeatherForecastPresenter implements ForecastPresenter {
 
     @Override
     public void getForecastByCurrentPlace() {
-        forecastCreator.createForecastByCoordinates();
+        if(checkGpsProviderIsEnable()) {
+            forecastCreator.createForecastByCoordinates();
+        } else {
+            showingView.askToEnableGpsProvider();
+        }
     }
 
     @Override
@@ -164,7 +168,7 @@ public class EveryWeatherForecastPresenter implements ForecastPresenter {
     public void onActivityCreate() {
         showingView.setProgressBarEnable(true);
         firstForecastShowing = true;
-        if(isNetworkAvailable()) {
+        if(isNetworkAvailable() && checkGpsProviderIsEnable()) {
             getForecastByCurrentPlace();
         } else {
             getForecastFromCache();

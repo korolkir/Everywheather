@@ -1,4 +1,4 @@
-package com.example.korolkir.everywheatherdemo.model;
+package com.example.korolkir.everywheatherdemo.view;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.korolkir.everywheatherdemo.R;
+import com.example.korolkir.everywheatherdemo.model.DailyForecast;
+import com.example.korolkir.everywheatherdemo.model.WeatherColorSelector;
+import com.example.korolkir.everywheatherdemo.model.WeatherImageSelector;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;

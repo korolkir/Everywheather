@@ -27,7 +27,6 @@ import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.example.korolkir.everywheatherdemo.R;
 import com.example.korolkir.everywheatherdemo.model.DailyForecast;
-import com.example.korolkir.everywheatherdemo.model.WeatherRecyclerViewAdapter;
 
 import com.example.korolkir.everywheatherdemo.presenter.ForecastPresenter;
 import com.example.korolkir.everywheatherdemo.presenter.EveryWeatherForecastPresenter;
